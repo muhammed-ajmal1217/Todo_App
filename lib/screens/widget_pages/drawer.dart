@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todolist/login_page.dart';
-import 'package:todolist/model/data_model.dart';
 import 'package:todolist/screens/widget_pages/drawer_pages/aboutpage.dart';
 import 'package:todolist/screens/widget_pages/drawer_pages/privacypage.dart';
-
 import '../../theme/theme_manager.dart';
 
 class draWer extends StatefulWidget {
@@ -219,7 +216,6 @@ class _draWerState extends State<draWer> {
   void resetApp(BuildContext context) async {
     final sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.clear();
-    Hive.deleteFromDisk();
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (context) => LoginPage()),
     );

@@ -13,7 +13,7 @@ void main() async {
     Hive.registerAdapter(TaskModelAdapter());
   }
   await Hive.openBox('profile_picture_box');
-  await Hive.openBox('user_data_box');
+  await Hive.openBox('username_box');
   final taskDb = await Hive.openBox<TaskModel>('task_db');
   taskListNotifier.value = taskDb.values.toList();
   final themeManager = ThemeManager();

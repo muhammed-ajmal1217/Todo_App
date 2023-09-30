@@ -37,62 +37,67 @@ class _ChartState extends State<Chart> {
                     snapshot.data!.where((task) => task.tasComplete).length;
                 int incompletedTasks =
                     snapshot.data!.where((task) => !task.tasComplete).length;
-                 return Center(
-                   child: Padding(
-                     padding: const EdgeInsets.only(top: 60),
-                     child: Container(
-                     width: 350, 
-                     height: 350,
-                     child: PieChart(
-                       PieChartData(
-                         sections: [
-                           PieChartSectionData(
-                             value: completedTasks.toDouble(),
-                             color: Color.fromARGB(255, 14, 2, 121),
-                             
-                           ),
-                           PieChartSectionData(
-                             value: incompletedTasks.toDouble(),
-                             color: const Color.fromARGB(255, 54, 206, 244),
-                           ),
-                         ],
-                         sectionsSpace: 2,
-                         centerSpaceRadius: 90,
-                         startDegreeOffset: 90,
-                         
-                       ),
-                     ),
-                                ),
-                   ),
-                 );
-              
+                int totalTasks = completedTasks + incompletedTasks;
+
+                double completedPercentage = (completedTasks / totalTasks) * 100;
+                double incompletedPercentage = (incompletedTasks / totalTasks) * 100;
+
+                return Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 60),
+                    child: Container(
+                      width: 350,
+                      height: 350,
+                      child: PieChart(
+                        PieChartData(
+                          sections: [
+                            PieChartSectionData(
+                              value: completedPercentage,
+                              color: Color.fromARGB(255, 14, 2, 121),
+                              title: '${completedPercentage.toStringAsFixed(0)}%',titleStyle: TextStyle(color: Color.fromARGB(255, 245, 19, 2),fontSize: 50,fontWeight: FontWeight.w900),
+                              radius: 40, 
+                            ),
+                            PieChartSectionData(
+                              value: incompletedPercentage,
+                              color: const Color.fromARGB(255, 54, 206, 244),
+                              title: '${incompletedPercentage.toStringAsFixed(0)}%',titleStyle: TextStyle(color: Color.fromARGB(255, 31, 150, 20),fontSize: 50,fontWeight: FontWeight.w900),
+                              radius: 40, 
+                            ),
+                          ],
+                          sectionsSpace: 2,
+                          centerSpaceRadius: 90,
+                          startDegreeOffset: 90,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
               }
             },
           ),
           SizedBox(height: 20,),
-          chartValues(color: Color.fromARGB(255, 14, 2, 121),text: "Completed Task's"),
+          chartValues(color: Color.fromARGB(255, 14, 2, 121), text: "Completed Task's"),
           SizedBox(height: 40,),
-          chartValues(color: const Color.fromARGB(255, 54, 206, 244),text: "Incomplete Task's")
+          chartValues(color: const Color.fromARGB(255, 54, 206, 244), text: "Incomplete Task's")
         ],
-        
       ),
     );
   }
 
-  Row chartValues({required Color color,String? text}) {
+  Row chartValues({required Color color, String? text}) {
     return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              height: 20,
-              width: 20,
-              decoration: BoxDecoration(
-                color: color,
-                borderRadius: BorderRadius.circular(7)),
-            ),
-            SizedBox(width: 15,),
-            Text(text!,style: TextStyle(fontWeight: FontWeight.w700,fontSize: 20),)
-          ],
-        );
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          height: 20,
+          width: 20,
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(7)),
+        ),
+        SizedBox(width: 15,),
+        Text(text!, style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),)
+      ],
+    );
   }
 }

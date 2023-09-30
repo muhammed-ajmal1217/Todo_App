@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todolist/bottom_bar.dart';
 import 'package:todolist/splash.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key});
+  const  LoginPage({Key? key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -206,6 +207,8 @@ class _LoginPageState extends State<LoginPage> {
     if (name.isNotEmpty) {
       final sharedPreferences = await SharedPreferences.getInstance();
       await sharedPreferences.setString(SAVE_KEY_NAME, name);
+      final usernameBox = await Hive.openBox('username_box');
+      await usernameBox.put('username', name);
       navigateToBottomNavigation(ctx);
     } else {
       ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
