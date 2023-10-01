@@ -24,7 +24,7 @@ class _LoginPageState extends State<LoginPage> {
       navigateToBottomNavigation(context);
     }
   }
-
+  
   @override
   void initState() {
     setState(() {
@@ -202,25 +202,39 @@ class _LoginPageState extends State<LoginPage> {
   ),
 );
 }
-    void loginConform(BuildContext ctx) async {
-    final name = _nameController.text;
-    if (name.isNotEmpty) {
-      final sharedPreferences = await SharedPreferences.getInstance();
-      await sharedPreferences.setString(SAVE_KEY_NAME, name);
-      final usernameBox = await Hive.openBox('username_box');
-      await usernameBox.put('username', name);
-      navigateToBottomNavigation(ctx);
-    } else {
-      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
-        margin: EdgeInsets.all(10),
-        backgroundColor: Colors.red,
-        behavior: SnackBarBehavior.floating,
-        content: Text("Username is empty"),
-      ));
-    }
+void loginConform(BuildContext ctx) async {
+  final name = _nameController.text;
+  if (name.isNotEmpty) {
+    showDialog(
+      context: ctx,
+      barrierDismissible: false, 
+      builder: (BuildContext context) {
+        return Center(
+          child: CircularProgressIndicator(color: Colors.greenAccent),
+        );
+      },
+    );
+    final sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences.setString(SAVE_KEY_NAME, name);
+    final usernameBox = await Hive.openBox('username_box');
+    await usernameBox.put('username', name);
+    await Future.delayed(Duration(seconds: 2)); 
+    Navigator.of(ctx).pop();
+
+    navigateToBottomNavigation(ctx);
+  } else {
+    ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
+      margin: EdgeInsets.all(10),
+      backgroundColor: Colors.red,
+      behavior: SnackBarBehavior.floating,
+      content: Text("Username is empty"),
+    ));
   }
+}
+
+
     void navigateToBottomNavigation(BuildContext ctx) {
-      Navigator.of(ctx).push(
+      Navigator.of(ctx).pushReplacement(
     MaterialPageRoute(builder: (context) => BottomNavigation(username:_nameController.text)),
   );
   }

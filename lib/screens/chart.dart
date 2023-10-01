@@ -20,6 +20,7 @@ class _ChartState extends State<Chart> {
       appBar: AppBar(
         title: Text('Chart'),
         backgroundColor: themeManager.primaryColor,
+        automaticallyImplyLeading: false,
       ),
       body: Column(
         children: [

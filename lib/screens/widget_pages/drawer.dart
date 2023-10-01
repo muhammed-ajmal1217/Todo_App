@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todolist/login_page.dart';
+import 'package:todolist/model/data_model.dart';
 import 'package:todolist/screens/widget_pages/drawer_pages/aboutpage.dart';
 import 'package:todolist/screens/widget_pages/drawer_pages/privacypage.dart';
 import '../../theme/theme_manager.dart';
@@ -213,11 +215,19 @@ class _draWerState extends State<draWer> {
     );
   }
 
-  void resetApp(BuildContext context) async {
-    final sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.clear();
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => LoginPage()),
-    );
-  }
+void resetApp(BuildContext context) async {
+  final sharedPreferences = await SharedPreferences.getInstance();
+  sharedPreferences.clear();
+  
+  final taskbox = Hive.box<TaskModel>('task_db');
+  await taskbox.clear();
+  final pictureBox=Hive.box('profile_picture_box');
+  await pictureBox.clear();
+  final nameBox = Hive.box('username_box');
+  await nameBox.clear();  
+  Navigator.of(context).pushReplacement(
+    MaterialPageRoute(builder: (context) => LoginPage()),
+  );
+}
+
 }
