@@ -32,7 +32,8 @@ class _ChartState extends State<Chart> {
               } else if (snapshot.hasError) {
                 return Center(child: Text('Error: ${snapshot.error}'));
               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Center(child: Text('No data available.'));
+                return const Center(
+                  child: Text("'No task's available.'",style: TextStyle(color: Colors.grey,fontSize: 25),));
               } else {
                 int completedTasks =
                     snapshot.data!.where((task) => task.tasComplete).length;

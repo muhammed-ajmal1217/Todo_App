@@ -210,7 +210,7 @@ void loginConform(BuildContext ctx) async {
       barrierDismissible: false, 
       builder: (BuildContext context) {
         return Center(
-          child: CircularProgressIndicator(color: Colors.greenAccent),
+          child: CircularProgressIndicator(color: Colors.greenAccent,),
         );
       },
     );

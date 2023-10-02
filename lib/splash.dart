@@ -37,11 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
             child: Center(
               child:Column(
               children: [
-                Icon(
-                  Icons.note_add_outlined,
-                  size: 150,
-                  color: themeManager.searchIcons,
-                ),
+                Image.asset('asset/42430-removebg-preview.png',height: 110,),
                 if (isLoading)
                   CircularProgressIndicator(color: Colors.greenAccent),
               ],

@@ -25,7 +25,6 @@ enum FilterCriteria {
   Daily,
   Weekly,
   Monthly,
-  Yearly,
 }
 
 FilterCriteria selectedFilter = FilterCriteria.Daily;
@@ -51,11 +50,11 @@ class _HomePageState extends State<HomePage> {
       taskListNotifier.value = todolist;
     });
     filteredTasks = todolist;
-  final usernameBox = Hive.box('username_box');
-  final storedUsername = usernameBox.get('username');
-  if (storedUsername != null) {
-    widget.username = storedUsername; 
-  }
+    final usernameBox = Hive.box('username_box');
+    final storedUsername = usernameBox.get('username');
+    if (storedUsername != null) {
+      widget.username = storedUsername;
+    }
   }
 
   void filterTasks(String search) {
@@ -97,14 +96,6 @@ class _HomePageState extends State<HomePage> {
           final taskDate = task.date;
           return taskDate.isAfter(startOfMonth) &&
               taskDate.isBefore(endOfMonth.add(const Duration(days: 1)));
-        }).toList();
-      case FilterCriteria.Yearly:
-        final startOfYear = DateTime(now.year, 1, 1);
-        final endOfYear = DateTime(now.year, 12, 31);
-        return tasks.where((task) {
-          final taskDate = task.date;
-          return taskDate.isAfter(startOfYear) &&
-              taskDate.isBefore(endOfYear.add(const Duration(days: 1)));
         }).toList();
     }
   }
@@ -186,9 +177,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         child: GestureDetector(
                           onTap: () {
-                            setState(() {
-                              _addPhotoFunction(context);
-                            });
+                            _addPhotoFunction(context);
                           },
                           child: ClipOval(
                             child: CircleAvatar(
@@ -200,12 +189,12 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 20,
                       ),
                       Text(
                         '${widget.username}',
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Colors.white,
                             fontSize: 20,
                             fontWeight: FontWeight.w100),
@@ -242,10 +231,8 @@ class _HomePageState extends State<HomePage> {
                       DropdownButton<FilterCriteria>(
                         value: selectedFilter,
                         onChanged: (newValue) {
-                          setState(() {
-                            selectedFilter = newValue!;
-                            filterTasks('');
-                          });
+                          selectedFilter = newValue!;
+                          filterTasks('');
                         },
                         items: FilterCriteria.values.map((criteria) {
                           return DropdownMenuItem<FilterCriteria>(
@@ -307,24 +294,22 @@ class _HomePageState extends State<HomePage> {
                                         children: [
                                           Text(
                                             '${DateFormat('MM/dd/yyyy').format(data.date)}',
-                                            style: TextStyle(fontSize: 14),
+                                            style: const TextStyle(fontSize: 14),
                                           ),
                                           if (data.description != null &&
                                               data.description.isNotEmpty)
                                             Text(
                                               '${data.description}',
-                                              style: TextStyle(fontSize: 14),
+                                              style: const TextStyle(fontSize: 14),
                                             ),
                                         ],
                                       ),
                                       leading: CustomCheckbox(
                                         value: data.tasComplete,
-                                        onChanged: (newValue) {
-                                          setState(() {
+                                        onChanged: (newValue) {                                      
                                             checkBoxchanged(newValue, index);
                                             data.tasComplete =
-                                                newValue ?? false;
-                                          });
+                                                newValue ?? false;                                       
                                         },
                                       ),
                                       trailing: Row(
@@ -332,24 +317,23 @@ class _HomePageState extends State<HomePage> {
                                         children: [
                                           InkWell(
                                               onTap: () {
-                                                AlertDialog(
+                                                const AlertDialog(
                                                   title: Text(
                                                       'Are you sure you want to delete this task..?'),
                                                 );
-
                                                 _showEditDialogBox(index);
                                               },
-                                              child: Icon(Icons.edit)),
+                                              child: const Icon(Icons.edit)),
                                           InkWell(
                                               onTap: () {
-                                                AlertDialog(
+                                                const AlertDialog(
                                                   title: Text(
                                                       'Are you sure you want to delete this task..?'),
                                                 );
                                                 _showDeleteConfirmationDialog(
                                                     context, index);
                                               },
-                                              child: Icon(Icons.delete)),
+                                              child: const Icon(Icons.delete)),
                                         ],
                                       ),
                                     ),
@@ -378,7 +362,7 @@ class _HomePageState extends State<HomePage> {
         return Form(
           key: _formKey,
           child: AlertDialog(
-            title: Text('Add Task'),
+            title: const Text('Add Task'),
             content: Column(
               children: [
                 TextFormField(
@@ -394,11 +378,11 @@ class _HomePageState extends State<HomePage> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide:
-                          BorderSide(color: Color.fromARGB(255, 4, 18, 94)),
+                          const BorderSide(color: Color.fromARGB(255, 4, 18, 94)),
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Row(
@@ -412,26 +396,26 @@ class _HomePageState extends State<HomePage> {
                           hintText: 'Select Date',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                                 color: Color.fromARGB(255, 4, 18, 94)),
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 20,
                     ),
                     InkWell(
                         splashColor: Colors.grey,
                         onTap: () => _showDatePicker(),
-                        child: Icon(
+                        child: const Icon(
                           Icons.date_range_outlined,
                           size: 20,
                           color: Colors.grey,
                         )),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 TextFormField(
@@ -441,19 +425,19 @@ class _HomePageState extends State<HomePage> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide:
-                          BorderSide(color: Color.fromARGB(255, 4, 18, 94)),
+                          const BorderSide(color: Color.fromARGB(255, 4, 18, 94)),
                     ),
                   ),
                   maxLines: 4,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
               ],
             ),
             actions: <Widget>[
               TextButton(
-                  child: Text('Add'),
+                  child: const Text('Add'),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       saveTask();
@@ -463,7 +447,7 @@ class _HomePageState extends State<HomePage> {
                     print('Data is Empty');
                   }),
               TextButton(
-                  child: Text('Cancel'),
+                  child: const Text('Cancel'),
                   onPressed: () {
                     Navigator.of(context).pop();
                   }),
@@ -490,12 +474,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   void checkBoxchanged(bool? value, int index) async {
-    final taskDb = Hive.box<TaskModel>('task_db');
+   setState(() {
+      final taskDb = Hive.box<TaskModel>('task_db');
     final task = taskDb.getAt(index);
     if (task != null) {
       task.tasComplete = value ?? false;
-      await taskDb.putAt(index, task);
+      taskDb.putAt(index, task);
     }
+   });
   }
 
   void _showDeleteConfirmationDialog(BuildContext context, int index) {
@@ -503,16 +489,16 @@ class _HomePageState extends State<HomePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Are you sure you want to delete this task?'),
+          title: const Text('Are you sure you want to delete this task?'),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Delete'),
+              child: const Text('Delete'),
               onPressed: () {
                 setState(() {
                   deleteTask(index);
@@ -540,7 +526,7 @@ class _HomePageState extends State<HomePage> {
         return Form(
           key: _formKey,
           child: AlertDialog(
-            title: Text('Edit Task'),
+            title: const Text('Edit Task'),
             content: Column(
               children: [
                 TextFormField(
@@ -554,13 +540,13 @@ class _HomePageState extends State<HomePage> {
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(
+                      borderSide: const BorderSide(
                         color: Color.fromARGB(255, 4, 18, 94),
                       ),
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Row(
@@ -580,26 +566,26 @@ class _HomePageState extends State<HomePage> {
                           hintText: 'Select Date',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                                 color: Color.fromARGB(255, 4, 18, 94)),
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 20,
                     ),
                     InkWell(
                         splashColor: Colors.grey,
                         onTap: () => _showDatePicker(),
-                        child: Icon(
+                        child: const Icon(
                           Icons.date_range_outlined,
                           size: 20,
                           color: Colors.grey,
                         )),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 TextFormField(
@@ -609,19 +595,19 @@ class _HomePageState extends State<HomePage> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide:
-                          BorderSide(color: Color.fromARGB(255, 4, 18, 94)),
+                          const BorderSide(color: Color.fromARGB(255, 4, 18, 94)),
                     ),
                   ),
                   maxLines: 4,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
               ],
             ),
             actions: <Widget>[
               TextButton(
-                child: Text('Save'),
+                child: const Text('Save'),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     final updatedTask = TaskModel(
@@ -635,7 +621,7 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
               TextButton(
-                child: Text('Cancel'),
+                child: const Text('Cancel'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -652,7 +638,7 @@ class _HomePageState extends State<HomePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Center(child: Text('Add Profile picture')),
+          title: const Center(child: Text('Add Profile picture')),
           actions: <Widget>[
             Column(
               children: [
@@ -668,15 +654,15 @@ class _HomePageState extends State<HomePage> {
                           if (selectedImage != null) {
                             setState(() {
                               file = File(selectedImage.path);
+                              storeImageInHive(file!);
                             });
-                            storeImageInHive(file!);
 
                             Navigator.of(context).pop();
                           }
                         },
-                        child: Icon(Icons.camera_alt_outlined,
-                            color: Colors.white),
                         backgroundColor: Colors.red,
+                        child: const Icon(Icons.camera_alt_outlined,
+                            color: Colors.white),
                       ),
                       FloatingActionButton(
                         onPressed: () async {
@@ -685,33 +671,35 @@ class _HomePageState extends State<HomePage> {
                           if (selectedImage != null) {
                             setState(() {
                               file = File(selectedImage.path);
+                              storeImageInHive(file!);
                             });
-                            storeImageInHive(file!);
 
                             Navigator.of(context).pop();
                           }
                         },
-                        child: Icon(
+                        backgroundColor: const Color.fromARGB(255, 241, 218, 6),
+                        child: const Icon(
                           Icons.folder_open_outlined,
                           color: Colors.white,
                         ),
-                        backgroundColor: Color.fromARGB(255, 241, 218, 6),
                       ),
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 TextButton(
                   onPressed: () {
-                    deleteStoredImage();
+                    setState(() {
+                      deleteStoredImage();
+                    });
                     Navigator.of(context).pop();
                   },
-                  child: Text('Delete Image'),
+                  child: const Text('Delete Image'),
                 ),
                 TextButton(
-                  child: Text('Cancel'),
+                  child: const Text('Cancel'),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },

@@ -149,13 +149,36 @@ class _draWerState extends State<draWer> {
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: Text('Confirm Logout'),
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Reset app'),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          'if you tap Reset it will delete all the datas including image name are you sure you want to reset the app..?',
+                          style: TextStyle(color: Colors.grey, fontSize: 15),
+                        )
+                      ],
+                    ),
                     actions: <Widget>[
                       TextButton(
                           onPressed: () {
                             resetApp(context);
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (BuildContext context) {
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.greenAccent,
+                                  ),
+                                );
+                              },
+                            );
                           },
-                          child: Text('Logout')),
+                          child: Text('Reset')),
                       TextButton(
                           onPressed: () {
                             Navigator.of(context).pop();
@@ -215,19 +238,19 @@ class _draWerState extends State<draWer> {
     );
   }
 
-void resetApp(BuildContext context) async {
-  final sharedPreferences = await SharedPreferences.getInstance();
-  sharedPreferences.clear();
-  
-  final taskbox = Hive.box<TaskModel>('task_db');
-  await taskbox.clear();
-  final pictureBox=Hive.box('profile_picture_box');
-  await pictureBox.clear();
-  final nameBox = Hive.box('username_box');
-  await nameBox.clear();  
-  Navigator.of(context).pushReplacement(
-    MaterialPageRoute(builder: (context) => LoginPage()),
-  );
-}
+  void resetApp(BuildContext context) async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.clear();
 
+    final taskbox = Hive.box<TaskModel>('task_db');
+    await taskbox.clear();
+    final pictureBox = Hive.box('profile_picture_box');
+    await pictureBox.clear();
+    final nameBox = Hive.box('username_box');
+    await nameBox.clear();
+    await Future.delayed(Duration(seconds: 2));
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
+  }
 }
