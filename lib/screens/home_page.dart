@@ -25,6 +25,7 @@ enum FilterCriteria {
   Daily,
   Weekly,
   Monthly,
+  All,
 }
 
 FilterCriteria selectedFilter = FilterCriteria.Daily;
@@ -97,6 +98,8 @@ class _HomePageState extends State<HomePage> {
           return taskDate.isAfter(startOfMonth) &&
               taskDate.isBefore(endOfMonth.add(const Duration(days: 1)));
         }).toList();
+      case FilterCriteria.All:
+      return tasks;
     }
   }
 
@@ -154,52 +157,54 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                Positioned(
-                  top: 110,
-                  left: 15,
-                  child: Row(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.40),
-                              spreadRadius: 2,
-                              blurRadius: 5,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: const Color.fromARGB(255, 185, 184, 184),
-                            width: 1.0,
-                          ),
-                        ),
-                        child: GestureDetector(
-                          onTap: () {
-                            _addPhotoFunction(context);
-                          },
-                          child: ClipOval(
-                            child: CircleAvatar(
-                              radius: 45,
-                              backgroundColor:
-                                  const Color.fromARGB(255, 174, 198, 221),
-                              child: imageWidget,
+                Container(
+                  child: Positioned(
+                    top: 110,
+                    left: 15,
+                    child: Row(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.40),
+                                spreadRadius: 2,
+                                blurRadius: 5,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: const Color.fromARGB(255, 185, 184, 184),
+                              width: 1.0,
                             ),
                           ),
+                          child: GestureDetector(
+                            onTap: () {
+                              _addPhotoFunction(context);
+                            },
+                            child: ClipOval(
+                              child: CircleAvatar(
+                                radius: 45,
+                                backgroundColor:
+                                    const Color.fromARGB(255, 174, 198, 221),
+                                child: imageWidget,
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Text(
-                        '${widget.username}',
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w100),
-                      )
-                    ],
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Text(
+                          '${widget.username}',
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w100),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -440,7 +445,9 @@ class _HomePageState extends State<HomePage> {
                   child: const Text('Add'),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      saveTask();
+                      setState(() {
+                        saveTask();
+                      });
 
                       Navigator.of(context).pop();
                     }

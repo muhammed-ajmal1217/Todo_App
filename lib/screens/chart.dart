@@ -27,11 +27,7 @@ class _ChartState extends State<Chart> {
           FutureBuilder<List<TaskModel>>(
             future: getAlltasks(),
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
-              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+               if (!snapshot.hasData || snapshot.data!.isEmpty) {
                 return const Center(
                   child: Text("'No task's available.'",style: TextStyle(color: Colors.grey,fontSize: 25),));
               } else {
@@ -41,8 +37,8 @@ class _ChartState extends State<Chart> {
                     snapshot.data!.where((task) => !task.tasComplete).length;
                 int totalTasks = completedTasks + incompletedTasks;
 
-                double completedPercentage = (completedTasks / totalTasks) * 100;
-                double incompletedPercentage = (incompletedTasks / totalTasks) * 100;
+                double completed = (completedTasks / totalTasks) * 100;
+                double incompleted = (incompletedTasks / totalTasks) * 100;
 
                 return Center(
                   child: Padding(
@@ -54,15 +50,15 @@ class _ChartState extends State<Chart> {
                         PieChartData(
                           sections: [
                             PieChartSectionData(
-                              value: completedPercentage,
+                              value: completed,
                               color: Color.fromARGB(255, 14, 2, 121),
-                              title: '${completedPercentage.toStringAsFixed(0)}%',titleStyle: TextStyle(color: Color.fromARGB(255, 245, 19, 2),fontSize: 50,fontWeight: FontWeight.w900),
+                              title: '${completed.toStringAsFixed(0)}%',titleStyle: TextStyle(color: Color.fromARGB(255, 31, 150, 20),fontSize: 50,fontWeight: FontWeight.w900),
                               radius: 40, 
                             ),
                             PieChartSectionData(
-                              value: incompletedPercentage,
+                              value: incompleted,
                               color: const Color.fromARGB(255, 54, 206, 244),
-                              title: '${incompletedPercentage.toStringAsFixed(0)}%',titleStyle: TextStyle(color: Color.fromARGB(255, 31, 150, 20),fontSize: 50,fontWeight: FontWeight.w900),
+                              title: '${incompleted.toStringAsFixed(0)}%',titleStyle: TextStyle(color: Color.fromARGB(255, 224, 2, 2),fontSize: 50,fontWeight: FontWeight.w900),
                               radius: 40, 
                             ),
                           ],
