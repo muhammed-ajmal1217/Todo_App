@@ -15,6 +15,16 @@ class _AnimatedSearchBarState extends State<AnimatedSearchBar> {
   bool _isSearching = false;
 
   @override
+  void initState() {
+    super.initState();
+    _controller.addListener(() {
+      if (_controller.text.isNotEmpty) {
+        widget.onSearch(_controller.text);
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final themeManager = Provider.of<ThemeManager>(context);
     return AnimatedContainer(

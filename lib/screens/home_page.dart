@@ -9,7 +9,9 @@ import 'package:provider/provider.dart';
 import 'package:todolist/functions/db_functions.dart';
 import 'package:todolist/functions/image_function.dart';
 import 'package:todolist/functions/task_adding_function.dart';
+import 'package:todolist/functions/task_editing.dart';
 import 'package:todolist/model/data_model.dart';
+import 'package:todolist/screens/task_utils.dart';
 import 'package:todolist/screens/widget_pages/checkbox_change.dart';
 import 'package:todolist/screens/widget_pages/drawer.dart';
 import 'package:todolist/screens/widget_pages/search_bar.dart';
@@ -61,20 +63,18 @@ class _HomePageState extends State<HomePage> {
   }
 
   void filterTasks(String search) {
-    final filteredList = filterTasksBySearch(todolist, search);
-
-    setState(() {
-      filteredTasks = filteredList;
-    });
-  }
-
-  List<TaskModel> filterTasksBySearch(List<TaskModel> taskList, String search) {
-    return search.isEmpty
-        ? taskList
-        : taskList
+    final filteredBySearch = search.isEmpty
+        ? todolist
+        : todolist
             .where((task) =>
                 task.taskName.toLowerCase().contains(search.toLowerCase()))
             .toList();
+    final filteredByCriteria =
+        filterTasksByCriteria(filteredBySearch, selectedFilter, search);
+
+    setState(() {
+      filteredTasks = filteredByCriteria;
+    });
   }
 
   @override
@@ -281,8 +281,7 @@ class _HomePageState extends State<HomePage> {
                                             style:
                                                 const TextStyle(fontSize: 14),
                                           ),
-                                          if (data.description != null &&
-                                              data.description.isNotEmpty)
+                                          if (data.description.isNotEmpty)
                                             Text(
                                               '${data.description}',
                                               style:
@@ -293,8 +292,11 @@ class _HomePageState extends State<HomePage> {
                                       leading: CustomCheckbox(
                                         value: data.tasComplete,
                                         onChanged: (newValue) {
-                                          checkBoxchanged(newValue, index);
-                                          data.tasComplete = newValue ?? false;
+                                          setState(() {
+                                            checkBoxchanged(newValue, index);
+                                            data.tasComplete =
+                                                newValue ?? false;
+                                          });
                                         },
                                       ),
                                       trailing: Row(
@@ -304,9 +306,15 @@ class _HomePageState extends State<HomePage> {
                                               onTap: () {
                                                 const AlertDialog(
                                                   title: Text(
-                                                      'Are you sure you want to delete this task..?'),
+                                                      'Edit Task'),
                                                 );
-                                                _showEditDialogBox(index);
+                                                showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return ShowDialogEdit(task: filteredTasks[index],index: index, );
+                                                  },
+                                                );
                                               },
                                               child: const Icon(Icons.edit)),
                                           InkWell(
@@ -338,17 +346,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void checkBoxchanged(bool? value, int index) async {
-    setState(() {
-      final taskDb = Hive.box<TaskModel>('task_db');
-      final task = taskDb.getAt(index);
-      if (task != null) {
-        task.tasComplete = value ?? false;
-        taskDb.putAt(index, task);
-      }
-    });
-  }
-
   void _showDeleteConfirmationDialog(BuildContext context, int index) {
     showDialog(
       context: context,
@@ -376,129 +373,7 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
-
-  void _showEditDialogBox(int index) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        final String currentTaskName = todolist[index].taskName;
-        final String currentDescription = todolist[index].description;
-        _taskController.text = currentTaskName;
-        _discriptController.text = currentDescription;
-        _dateController.text =
-            DateFormat('MM/dd/yyyy').format(todolist[index].date);
-
-        return Form(
-          key: _formKey,
-          child: AlertDialog(
-            title: const Text('Edit Task'),
-            content: Column(
-              children: [
-                TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Task is Empty';
-                    }
-                    return null;
-                  },
-                  controller: _taskController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                        color: Color.fromARGB(255, 4, 18, 94),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: TextFormField(
-                        controller: _dateController,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Date is Empty';
-                          }
-                          return null;
-                        },
-                        readOnly: true,
-                        decoration: InputDecoration(
-                          hintText: 'Select Date',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                                color: Color.fromARGB(255, 4, 18, 94)),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    InkWell(
-                        splashColor: Colors.grey,
-                        // onTap: () => _showDatePicker(),
-                        child: const Icon(
-                          Icons.date_range_outlined,
-                          size: 20,
-                          color: Colors.grey,
-                        )),
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextFormField(
-                  controller: _discriptController,
-                  decoration: InputDecoration(
-                    hintText: 'Description (optional)',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                          color: Color.fromARGB(255, 4, 18, 94)),
-                    ),
-                  ),
-                  maxLines: 4,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-              ],
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('Save'),
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    final updatedTask = TaskModel(
-                        taskName: _taskController.text.trim(),
-                        tasComplete: todolist[index].tasComplete,
-                        date: _dateTime,
-                        description: _discriptController.text.trim());
-                    updateTask(index, updatedTask);
-                    Navigator.of(context).pop();
-                  }
-                },
-              ),
-              TextButton(
-                child: const Text('Cancel'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  void _addPhotoFunction(BuildContext context) async {
+  void _addPhotoFunction(BuildContext context) {
     ImageFunction.showAddPhotoDialog(context);
   }
 }

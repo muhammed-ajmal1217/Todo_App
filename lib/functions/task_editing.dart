@@ -2,16 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todolist/functions/db_functions.dart';
 import 'package:todolist/model/data_model.dart';
+import 'package:todolist/screens/home_page.dart';
 
-class ShowDialogAdd extends StatefulWidget {
-  
-   ShowDialogAdd({super.key});
+class ShowDialogEdit extends StatefulWidget {
+  final TaskModel task;
+  final int index;
+
+  ShowDialogEdit({Key? key, required this.task, required this.index})
+      : super(key: key);
 
   @override
-  State<ShowDialogAdd> createState() => _ShowDialogState();
+  State<ShowDialogEdit> createState() => _ShowDialogState();
 }
 
-class _ShowDialogState extends State<ShowDialogAdd> {
+class _ShowDialogState extends State<ShowDialogEdit> {
   final TextEditingController _taskController = TextEditingController();
 
   final TextEditingController _dateController = TextEditingController();
@@ -22,28 +26,37 @@ class _ShowDialogState extends State<ShowDialogAdd> {
 
   DateTime _dateTime = DateTime.now();
 
+  List<HomePage> todolist = [];
+  void initState() {
+    super.initState();
+    _taskController.text = widget.task.taskName;
+    _discriptController.text = widget.task.description;
+    _dateTime = widget.task.date;
+    _dateController.text = _formatDate(widget.task.date);
+  }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Add Task'),
+      title: const Text('Edit Task'),
       content: Form(
         key: _formKey,
         child: Column(
           children: [
             TextFormField(
-              controller: _taskController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Task is Empty';
                 }
                 return null;
               },
+              controller: _taskController,
               decoration: InputDecoration(
-                hintText: 'Task',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: const BorderSide(
-                      color: Color.fromARGB(255, 4, 18, 94)),
+                    color: Color.fromARGB(255, 4, 18, 94),
+                  ),
                 ),
               ),
             ),
@@ -56,6 +69,12 @@ class _ShowDialogState extends State<ShowDialogAdd> {
                 Expanded(
                   child: TextFormField(
                     controller: _dateController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Date is Empty';
+                      }
+                      return null;
+                    },
                     readOnly: true,
                     decoration: InputDecoration(
                       hintText: 'Select Date',
@@ -71,14 +90,13 @@ class _ShowDialogState extends State<ShowDialogAdd> {
                   width: 20,
                 ),
                 InkWell(
-                  onTap:()=>_showDatePicker(),
-                  splashColor: Colors.grey,
-                  child: const Icon(
-                    Icons.date_range_outlined,
-                    size: 20,
-                    color: Colors.grey,
-                  ),
-                ),
+                    splashColor: Colors.grey,
+                    onTap: () => _showDatePicker(),
+                    child: const Icon(
+                      Icons.date_range_outlined,
+                      size: 20,
+                      color: Colors.grey,
+                    )),
               ],
             ),
             const SizedBox(
@@ -90,8 +108,8 @@ class _ShowDialogState extends State<ShowDialogAdd> {
                 hintText: 'Description (optional)',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(
-                      color: Color.fromARGB(255, 4, 18, 94)),
+                  borderSide:
+                      const BorderSide(color: Color.fromARGB(255, 4, 18, 94)),
                 ),
               ),
               maxLines: 4,
@@ -102,42 +120,32 @@ class _ShowDialogState extends State<ShowDialogAdd> {
           ],
         ),
       ),
-      actions:<Widget>[
-              TextButton(
-                  child: const Text('Add'),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      setState(() {
-                        saveTask();
-                      });
-
-                      Navigator.of(context).pop();
-                    }
-                    print('Data is Empty');
-                  }),
-              TextButton(
-                  child: const Text('Cancel'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  }),
-            ],
+      actions: <Widget>[
+        TextButton(
+          child: const Text('Save'),
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              final updatedTask = TaskModel(
+                taskName: _taskController.text.trim(),
+                tasComplete: widget.task.tasComplete,
+                date: _dateTime,
+                description: _discriptController.text.trim(),
+              );
+              updateTask(widget.index, updatedTask);
+              Navigator.of(context).pop(updatedTask);
+            }
+          },
+        ),
+        TextButton(
+          child: const Text('Cancel'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
     );
   }
-    Future<void> saveTask() async {
-    final _task = _taskController.text.trim();
-    final _date = _dateTime;
-    final _descriPtion = _discriptController.text.trim();
-    final task = TaskModel(
-        taskName: _task,
-        tasComplete: false,
-        date: _date,
-        description: _descriPtion);
-    await addtask(task);
-    _taskController.clear();
-    _dateController.clear();
-    _discriptController.clear();
-  }
-  
+
   void _showDatePicker() {
     showDatePicker(
       context: context,
