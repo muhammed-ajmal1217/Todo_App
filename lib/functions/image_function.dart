@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:todolist/functions/db_functions.dart';
 
-class PhotoFunction {
+
+class ImageFunction {
   static Future<void> showAddPhotoDialog(BuildContext context) async {
     final ImagePicker imagePicker = ImagePicker();
     File? file;
@@ -81,5 +82,4 @@ class PhotoFunction {
       },
     );
   }
-  
 }

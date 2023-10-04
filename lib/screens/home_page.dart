@@ -7,7 +7,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:todolist/functions/db_functions.dart';
-import 'package:todolist/functions/homepage_functions.dart';
+import 'package:todolist/functions/image_function.dart';
+import 'package:todolist/functions/task_adding_function.dart';
 import 'package:todolist/model/data_model.dart';
 import 'package:todolist/screens/widget_pages/checkbox_change.dart';
 import 'package:todolist/screens/widget_pages/drawer.dart';
@@ -59,22 +60,22 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-void filterTasks(String search) {
-  final filteredList = filterTasksBySearch(todolist, search);
+  void filterTasks(String search) {
+    final filteredList = filterTasksBySearch(todolist, search);
 
-  setState(() {
-    filteredTasks = filteredList;
-  });
-}
+    setState(() {
+      filteredTasks = filteredList;
+    });
+  }
 
-List<TaskModel> filterTasksBySearch(List<TaskModel> taskList, String search) {
-  return search.isEmpty
-      ? taskList
-      : taskList
-          .where((task) =>
-              task.taskName.toLowerCase().contains(search.toLowerCase()))
-          .toList();
-}
+  List<TaskModel> filterTasksBySearch(List<TaskModel> taskList, String search) {
+    return search.isEmpty
+        ? taskList
+        : taskList
+            .where((task) =>
+                task.taskName.toLowerCase().contains(search.toLowerCase()))
+            .toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -223,7 +224,12 @@ List<TaskModel> filterTasksBySearch(List<TaskModel> taskList, String search) {
                         backgroundColor: themeManager.floatingButtonColor,
                         splashColor: const Color.fromARGB(255, 240, 189, 48),
                         onPressed: () {
-                          _showAddDialogue(context);
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return ShowDialogAdd();
+                            },
+                          );
                         },
                         child: const Icon(Icons.add),
                       ),
@@ -272,22 +278,23 @@ List<TaskModel> filterTasksBySearch(List<TaskModel> taskList, String search) {
                                         children: [
                                           Text(
                                             '${DateFormat('MM/dd/yyyy').format(data.date)}',
-                                            style: const TextStyle(fontSize: 14),
+                                            style:
+                                                const TextStyle(fontSize: 14),
                                           ),
                                           if (data.description != null &&
                                               data.description.isNotEmpty)
                                             Text(
                                               '${data.description}',
-                                              style: const TextStyle(fontSize: 14),
+                                              style:
+                                                  const TextStyle(fontSize: 14),
                                             ),
                                         ],
                                       ),
                                       leading: CustomCheckbox(
                                         value: data.tasComplete,
-                                        onChanged: (newValue) {                                      
-                                            checkBoxchanged(newValue, index);
-                                            data.tasComplete =
-                                                newValue ?? false;                                       
+                                        onChanged: (newValue) {
+                                          checkBoxchanged(newValue, index);
+                                          data.tasComplete = newValue ?? false;
                                         },
                                       ),
                                       trailing: Row(
@@ -331,137 +338,15 @@ List<TaskModel> filterTasksBySearch(List<TaskModel> taskList, String search) {
     );
   }
 
-  Future<dynamic> _showAddDialogue(BuildContext context) {
-    _dateTime = DateTime.now();
-    _dateController.text = _formatDate(_dateTime);
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Form(
-          key: _formKey,
-          child: AlertDialog(
-            title: const Text('Add Task'),
-            content: Column(
-              children: [
-                TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Task is Empty';
-                    }
-                    return null;
-                  },
-                  controller: _taskController,
-                  decoration: InputDecoration(
-                    hintText: 'Task',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide:
-                          const BorderSide(color: Color.fromARGB(255, 4, 18, 94)),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: TextFormField(
-                        controller: _dateController,
-                        readOnly: true,
-                        decoration: InputDecoration(
-                          hintText: 'Select Date',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                                color: Color.fromARGB(255, 4, 18, 94)),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    InkWell(
-                        splashColor: Colors.grey,
-                        onTap: () => _showDatePicker(),
-                        child: const Icon(
-                          Icons.date_range_outlined,
-                          size: 20,
-                          color: Colors.grey,
-                        )),
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextFormField(
-                  controller: _discriptController,
-                  decoration: InputDecoration(
-                    hintText: 'Description (optional)',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide:
-                          const BorderSide(color: Color.fromARGB(255, 4, 18, 94)),
-                    ),
-                  ),
-                  maxLines: 4,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-              ],
-            ),
-            actions: <Widget>[
-              TextButton(
-                  child: const Text('Add'),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      setState(() {
-                        saveTask();
-                      });
-
-                      Navigator.of(context).pop();
-                    }
-                    print('Data is Empty');
-                  }),
-              TextButton(
-                  child: const Text('Cancel'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  }),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Future<void> saveTask() async {
-    final _task = _taskController.text.trim();
-    final _date = _dateTime;
-    final _descriPtion = _discriptController.text.trim();
-    final task = TaskModel(
-        taskName: _task,
-        tasComplete: false,
-        date: _date,
-        description: _descriPtion);
-    await addtask(task);
-    _taskController.clear();
-    _dateController.clear();
-    _discriptController.clear();
-  }
-
   void checkBoxchanged(bool? value, int index) async {
-   setState(() {
+    setState(() {
       final taskDb = Hive.box<TaskModel>('task_db');
-    final task = taskDb.getAt(index);
-    if (task != null) {
-      task.tasComplete = value ?? false;
-      taskDb.putAt(index, task);
-    }
-   });
+      final task = taskDb.getAt(index);
+      if (task != null) {
+        task.tasComplete = value ?? false;
+        taskDb.putAt(index, task);
+      }
+    });
   }
 
   void _showDeleteConfirmationDialog(BuildContext context, int index) {
@@ -557,7 +442,7 @@ List<TaskModel> filterTasksBySearch(List<TaskModel> taskList, String search) {
                     ),
                     InkWell(
                         splashColor: Colors.grey,
-                        onTap: () => _showDatePicker(),
+                        // onTap: () => _showDatePicker(),
                         child: const Icon(
                           Icons.date_range_outlined,
                           size: 20,
@@ -574,8 +459,8 @@ List<TaskModel> filterTasksBySearch(List<TaskModel> taskList, String search) {
                     hintText: 'Description (optional)',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-                      borderSide:
-                          const BorderSide(color: Color.fromARGB(255, 4, 18, 94)),
+                      borderSide: const BorderSide(
+                          color: Color.fromARGB(255, 4, 18, 94)),
                     ),
                   ),
                   maxLines: 4,
@@ -614,26 +499,6 @@ List<TaskModel> filterTasksBySearch(List<TaskModel> taskList, String search) {
   }
 
   void _addPhotoFunction(BuildContext context) async {
-    PhotoFunction.showAddPhotoDialog(context);
-  }
-
-  void _showDatePicker() {
-    showDatePicker(
-      context: context,
-      initialDate: _dateTime,
-      firstDate: DateTime(2020),
-      lastDate: DateTime(2060),
-    ).then((value) {
-      if (value != null) {
-        setState(() {
-          _dateTime = value;
-          _dateController.text = _formatDate(value);
-        });
-      }
-    });
-  }
-
-  String _formatDate(DateTime date) {
-    return DateFormat('MM/dd/yyyy').format(date);
+    ImageFunction.showAddPhotoDialog(context);
   }
 }
