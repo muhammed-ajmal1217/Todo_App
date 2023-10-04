@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../theme/theme_manager.dart';
+import '../../theme/theme_manager.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});

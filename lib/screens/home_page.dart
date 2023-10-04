@@ -1,17 +1,17 @@
-import 'dart:async';
 import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:todolist/functions/db_functions.dart';
-import 'package:todolist/functions/image_function.dart';
-import 'package:todolist/functions/task_adding_function.dart';
-import 'package:todolist/functions/task_editing.dart';
-import 'package:todolist/model/data_model.dart';
 import 'package:todolist/screens/task_utils.dart';
+import 'package:todolist/screens/widget_pages/image_adding.dart';
+import 'package:todolist/screens/widget_pages/task_adding.dart';
+import 'package:todolist/screens/widget_pages/task_editing.dart';
+import 'package:todolist/model/data_model.dart';
 import 'package:todolist/screens/widget_pages/checkbox_change.dart';
 import 'package:todolist/screens/widget_pages/drawer.dart';
 import 'package:todolist/screens/widget_pages/search_bar.dart';
@@ -25,41 +25,24 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-enum FilterCriteria {
-  Daily,
-  Weekly,
-  Monthly,
-  All,
-}
+enum FilterCriteria { Daily, Weekly, Monthly, All }
 
 FilterCriteria selectedFilter = FilterCriteria.Daily;
 
 class _HomePageState extends State<HomePage> {
-  final TextEditingController _taskController = TextEditingController();
-  final TextEditingController _dateController = TextEditingController();
-  final TextEditingController _discriptController = TextEditingController();
   List<TaskModel> todolist = [];
   List<TaskModel> filteredTasks = [];
-  final _formKey = GlobalKey<FormState>();
-  List<int>? imageBytes;
   File? file;
   ImagePicker image = ImagePicker();
-  DateTime _dateTime = DateTime.now();
 
   @override
   void initState() {
     super.initState();
-    final taskDb = Hive.box<TaskModel>('task_db');
-    todolist = taskDb.values.toList();
-    setState(() {
-      taskListNotifier.value = todolist;
-    });
+    todolist = Hive.box<TaskModel>('task_db').values.toList();
+    setState(() => taskListNotifier.value = todolist);
     filteredTasks = todolist;
-    final usernameBox = Hive.box('username_box');
-    final storedUsername = usernameBox.get('username');
-    if (storedUsername != null) {
-      widget.username = storedUsername;
-    }
+    final storedUsername = Hive.box('username_box').get('username');
+    if (storedUsername != null) widget.username = storedUsername;
   }
 
   void filterTasks(String search) {
@@ -72,9 +55,7 @@ class _HomePageState extends State<HomePage> {
     final filteredByCriteria =
         filterTasksByCriteria(filteredBySearch, selectedFilter, search);
 
-    setState(() {
-      filteredTasks = filteredByCriteria;
-    });
+    setState(() => filteredTasks = filteredByCriteria);
   }
 
   @override
@@ -154,9 +135,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           child: GestureDetector(
-                            onTap: () {
-                              _addPhotoFunction(context);
-                            },
+                            onTap: () => ImageFunction.showAddPhotoDialog(context),
                             child: ClipOval(
                               child: CircleAvatar(
                                 radius: 45,
@@ -171,7 +150,7 @@ class _HomePageState extends State<HomePage> {
                           width: 20,
                         ),
                         Text(
-                          '${widget.username}',
+                          widget.username,
                           style: const TextStyle(
                               color: Colors.white,
                               fontSize: 20,
@@ -210,8 +189,10 @@ class _HomePageState extends State<HomePage> {
                       DropdownButton<FilterCriteria>(
                         value: selectedFilter,
                         onChanged: (newValue) {
-                          selectedFilter = newValue!;
-                          filterTasks('');
+                          setState(() {
+                            selectedFilter = newValue!;
+                            filterTasks('');
+                          });
                         },
                         items: FilterCriteria.values.map((criteria) {
                           return DropdownMenuItem<FilterCriteria>(
@@ -223,14 +204,12 @@ class _HomePageState extends State<HomePage> {
                       FloatingActionButton(
                         backgroundColor: themeManager.floatingButtonColor,
                         splashColor: const Color.fromARGB(255, 240, 189, 48),
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return ShowDialogAdd();
-                            },
-                          );
-                        },
+                        onPressed: () => showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return ShowDialogAdd();
+                          },
+                        ),
                         child: const Icon(Icons.add),
                       ),
                     ],
@@ -241,103 +220,87 @@ class _HomePageState extends State<HomePage> {
             Builder(
               builder: (context) {
                 return ValueListenableBuilder(
-                    valueListenable: taskListNotifier,
-                    builder: (BuildContext ctx, List<TaskModel> studentList,
-                        Widget? child) {
-                      return Expanded(
-                        child: ListView.builder(
-                          itemCount: filteredTasks.length,
-                          itemBuilder: (context, index) {
-                            final data = filteredTasks[index];
-                            return Container(
-                              width: 200,
-                              height: 100,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  elevation: 4,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(top: 8),
-                                    child: ListTile(
-                                      title: Text(
-                                        data.taskName,
-                                        style: TextStyle(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w500,
-                                          decoration: data.tasComplete
-                                              ? TextDecoration.lineThrough
-                                              : TextDecoration.none,
+                  valueListenable: taskListNotifier,
+                  builder: (BuildContext ctx, List<TaskModel> studentList, Widget? child) {
+                    return Expanded(
+                      child: ListView.builder(
+                        itemCount: filteredTasks.length,
+                        itemBuilder: (context, index) {
+                          final data = filteredTasks[index];
+                          return Container(
+                            width: 200,
+                            height: 100,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                elevation: 4,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 8),
+                                  child: ListTile(
+                                    title: Text(
+                                      data.taskName,
+                                      style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w500,
+                                        decoration: data.tasComplete
+                                            ? TextDecoration.lineThrough
+                                            : TextDecoration.none,
+                                      ),
+                                    ),
+                                    subtitle: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '${DateFormat('MM/dd/yyyy').format(data.date)}',
+                                          style: const TextStyle(fontSize: 14),
                                         ),
-                                      ),
-                                      subtitle: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
+                                        if (data.description.isNotEmpty)
                                           Text(
-                                            '${DateFormat('MM/dd/yyyy').format(data.date)}',
-                                            style:
-                                                const TextStyle(fontSize: 14),
+                                            '${data.description}',
+                                            style: const TextStyle(fontSize: 14),
                                           ),
-                                          if (data.description.isNotEmpty)
-                                            Text(
-                                              '${data.description}',
-                                              style:
-                                                  const TextStyle(fontSize: 14),
-                                            ),
-                                        ],
-                                      ),
-                                      leading: CustomCheckbox(
-                                        value: data.tasComplete,
-                                        onChanged: (newValue) {
-                                          setState(() {
-                                            checkBoxchanged(newValue, index);
-                                            data.tasComplete =
-                                                newValue ?? false;
-                                          });
-                                        },
-                                      ),
-                                      trailing: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          InkWell(
-                                              onTap: () {
-                                                const AlertDialog(
-                                                  title: Text(
-                                                      'Edit Task'),
-                                                );
-                                                showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) {
-                                                    return ShowDialogEdit(task: filteredTasks[index],index: index, );
-                                                  },
-                                                );
-                                              },
-                                              child: const Icon(Icons.edit)),
-                                          InkWell(
-                                              onTap: () {
-                                                const AlertDialog(
-                                                  title: Text(
-                                                      'Are you sure you want to delete this task..?'),
-                                                );
-                                                _showDeleteConfirmationDialog(
-                                                    context, index);
-                                              },
-                                              child: const Icon(Icons.delete)),
-                                        ],
-                                      ),
+                                      ],
+                                    ),
+                                    leading: CustomCheckbox(
+                                      value: data.tasComplete,
+                                      onChanged: (newValue) {
+                                        setState(() {
+                                          checkBoxchanged(newValue, index);
+                                          data.tasComplete = newValue ?? false;
+                                        });
+                                      },
+                                    ),
+                                    trailing: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        InkWell(
+                                          onTap: () => showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return ShowDialogEdit(task: filteredTasks[index], index: index);
+                                            },
+                                          ),
+                                          child: const Icon(Icons.edit),
+                                        ),
+                                        InkWell(
+                                          onTap: () => _showDeleteConfirmationDialog(context, index),
+                                          child: const Icon(Icons.delete),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
                               ),
-                            );
-                          },
-                        ),
-                      );
-                    });
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                );
               },
             )
           ],
@@ -372,8 +335,5 @@ class _HomePageState extends State<HomePage> {
         );
       },
     );
-  }
-  void _addPhotoFunction(BuildContext context) {
-    ImageFunction.showAddPhotoDialog(context);
   }
 }

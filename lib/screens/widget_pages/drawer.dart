@@ -5,8 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todolist/login_page.dart';
 import 'package:todolist/model/data_model.dart';
-import 'package:todolist/screens/widget_pages/drawer_pages/aboutpage.dart';
-import 'package:todolist/screens/widget_pages/drawer_pages/privacypage.dart';
+import 'package:todolist/screens/drawer_pages/aboutpage.dart';
+import 'package:todolist/screens/drawer_pages/privacypage.dart';
 import '../../theme/theme_manager.dart';
 
 class draWer extends StatefulWidget {
