@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:todolist/functions/db_functions.dart';
+import 'package:todolist/functions/homepage_functions.dart';
 import 'package:todolist/model/data_model.dart';
 import 'package:todolist/screens/widget_pages/checkbox_change.dart';
 import 'package:todolist/screens/widget_pages/drawer.dart';
@@ -58,50 +59,22 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  void filterTasks(String search) {
-    final filteredBySearch = search.isEmpty
-        ? todolist
-        : todolist
-            .where((task) =>
-                task.taskName.toLowerCase().contains(search.toLowerCase()))
-            .toList();
-    final filteredByCriteria = filterTasksByCriteria(filteredBySearch);
+void filterTasks(String search) {
+  final filteredList = filterTasksBySearch(todolist, search);
 
-    setState(() {
-      filteredTasks = filteredByCriteria;
-    });
-  }
+  setState(() {
+    filteredTasks = filteredList;
+  });
+}
 
-  List<TaskModel> filterTasksByCriteria(List<TaskModel> tasks) {
-    final now = DateTime.now();
-    switch (selectedFilter) {
-      case FilterCriteria.Daily:
-        return tasks.where((task) {
-          final taskDate = task.date;
-          return taskDate.year == now.year &&
-              taskDate.month == now.month &&
-              taskDate.day == now.day;
-        }).toList();
-      case FilterCriteria.Weekly:
-        final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
-        final endOfWeek = startOfWeek.add(const Duration(days: 6));
-        return tasks.where((task) {
-          final taskDate = task.date;
-          return taskDate.isAfter(startOfWeek) &&
-              taskDate.isBefore(endOfWeek.add(const Duration(days: 1)));
-        }).toList();
-      case FilterCriteria.Monthly:
-        final startOfMonth = DateTime(now.year, now.month, 1);
-        final endOfMonth = DateTime(now.year, now.month + 1, 0);
-        return tasks.where((task) {
-          final taskDate = task.date;
-          return taskDate.isAfter(startOfMonth) &&
-              taskDate.isBefore(endOfMonth.add(const Duration(days: 1)));
-        }).toList();
-      case FilterCriteria.All:
-      return tasks;
-    }
-  }
+List<TaskModel> filterTasksBySearch(List<TaskModel> taskList, String search) {
+  return search.isEmpty
+      ? taskList
+      : taskList
+          .where((task) =>
+              task.taskName.toLowerCase().contains(search.toLowerCase()))
+          .toList();
+}
 
   @override
   Widget build(BuildContext context) {
@@ -641,82 +614,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _addPhotoFunction(BuildContext context) async {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Center(child: Text('Add Profile picture')),
-          actions: <Widget>[
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      FloatingActionButton(
-                        onPressed: () async {
-                          final selectedImage =
-                              await image.pickImage(source: ImageSource.camera);
-                          if (selectedImage != null) {
-                            setState(() {
-                              file = File(selectedImage.path);
-                              storeImageInHive(file!);
-                            });
-
-                            Navigator.of(context).pop();
-                          }
-                        },
-                        backgroundColor: Colors.red,
-                        child: const Icon(Icons.camera_alt_outlined,
-                            color: Colors.white),
-                      ),
-                      FloatingActionButton(
-                        onPressed: () async {
-                          final selectedImage = await image.pickImage(
-                              source: ImageSource.gallery);
-                          if (selectedImage != null) {
-                            setState(() {
-                              file = File(selectedImage.path);
-                              storeImageInHive(file!);
-                            });
-
-                            Navigator.of(context).pop();
-                          }
-                        },
-                        backgroundColor: const Color.fromARGB(255, 241, 218, 6),
-                        child: const Icon(
-                          Icons.folder_open_outlined,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      deleteStoredImage();
-                    });
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Delete Image'),
-                ),
-                TextButton(
-                  child: const Text('Cancel'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            ),
-          ],
-        );
-      },
-    );
+    PhotoFunction.showAddPhotoDialog(context);
   }
 
   void _showDatePicker() {
