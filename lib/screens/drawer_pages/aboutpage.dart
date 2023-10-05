@@ -11,7 +11,7 @@ class AboutPage extends StatelessWidget {
     final themeManager = Provider.of<ThemeManager>(context);
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: themeManager.primaryColor,
+          //backgroundColor: themeManager.primaryColor,
           title: Text('About'),
         ),
         body: Padding(

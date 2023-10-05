@@ -35,8 +35,8 @@ class _AnimatedSearchBarState extends State<AnimatedSearchBar> {
       alignment: _isSearching ? Alignment.centerLeft : Alignment.centerRight,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(80.0),
-        color:
-            _isSearching ? themeManager.searchIcons : themeManager.primaryColor,
+        // color:
+        //    // _isSearching ? themeManager.searchIcons : themeManager.primaryColor,
       ),
       child: Row(
         children: <Widget>[

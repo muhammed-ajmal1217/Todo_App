@@ -34,15 +34,21 @@ class _HomePageState extends State<HomePage> {
   List<TaskModel> filteredTasks = [];
   File? file;
   ImagePicker image = ImagePicker();
-
+  bool _isDeleteDialogOpen = false;
   @override
   void initState() {
     super.initState();
-    todolist = Hive.box<TaskModel>('task_db').values.toList();
-    setState(() => taskListNotifier.value = todolist);
-    filteredTasks = todolist;
-    final storedUsername = Hive.box('username_box').get('username');
-    if (storedUsername != null) widget.username = storedUsername;
+    Future.delayed(Duration.zero, () {
+      todolist = Hive.box<TaskModel>('task_db').values.toList();
+      taskListNotifier.value = todolist;
+      filteredTasks = todolist;
+      final storedUsername = Hive.box('username_box').get('username');
+      if (storedUsername != null) {
+        setState(() {
+          widget.username = storedUsername;
+        });
+      }
+    });
   }
 
   void filterTasks(String search) {
@@ -77,9 +83,11 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: themeManager.primaryColor,
         automaticallyImplyLeading: false,
-      ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: themeManager.primaryColorGradient,
+          ),)),
       endDrawer: draWer(),
       body: SafeArea(
         child: Column(
@@ -98,7 +106,7 @@ class _HomePageState extends State<HomePage> {
                         offset: const Offset(0, 4),
                       ),
                     ],
-                    color: themeManager.primaryColor,
+                    gradient: themeManager.primaryColorGradient,
                     borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.circular(60),
                       bottomRight: Radius.circular(60),
@@ -135,7 +143,8 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           child: GestureDetector(
-                            onTap: () => ImageFunction.showAddPhotoDialog(context),
+                            onTap: () =>
+                                ImageFunction.showAddPhotoDialog(context),
                             child: ClipOval(
                               child: CircleAvatar(
                                 radius: 45,
@@ -207,7 +216,14 @@ class _HomePageState extends State<HomePage> {
                         onPressed: () => showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return ShowDialogAdd();
+                            return Dialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16.0),
+                              ),
+                              child: SingleChildScrollView(
+                                child: ShowDialogAdd(),
+                              ),
+                            );
                           },
                         ),
                         child: const Icon(Icons.add),
@@ -221,7 +237,13 @@ class _HomePageState extends State<HomePage> {
               builder: (context) {
                 return ValueListenableBuilder(
                   valueListenable: taskListNotifier,
-                  builder: (BuildContext ctx, List<TaskModel> studentList, Widget? child) {
+                  builder: (BuildContext ctx, List<TaskModel> studentList,
+                      Widget? child) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      if (_isDeleteDialogOpen) {
+                        _showDeleteConfirmationDialog(context, _deleteIndex);
+                      }
+                    });
                     return Expanded(
                       child: ListView.builder(
                         itemCount: filteredTasks.length,
@@ -251,7 +273,8 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                     ),
                                     subtitle: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           '${DateFormat('MM/dd/yyyy').format(data.date)}',
@@ -260,7 +283,8 @@ class _HomePageState extends State<HomePage> {
                                         if (data.description.isNotEmpty)
                                           Text(
                                             '${data.description}',
-                                            style: const TextStyle(fontSize: 14),
+                                            style:
+                                                const TextStyle(fontSize: 14),
                                           ),
                                       ],
                                     ),
@@ -280,13 +304,19 @@ class _HomePageState extends State<HomePage> {
                                           onTap: () => showDialog(
                                             context: context,
                                             builder: (BuildContext context) {
-                                              return ShowDialogEdit(task: filteredTasks[index], index: index);
+                                              return ShowDialogEdit(
+                                                  task: filteredTasks[index],
+                                                  index: index);
                                             },
                                           ),
                                           child: const Icon(Icons.edit),
                                         ),
                                         InkWell(
-                                          onTap: () => _showDeleteConfirmationDialog(context, index),
+                                          onTap: () {
+                                            _deleteIndex = index;
+                                            _isDeleteDialogOpen = true;
+                                            setState(() {});
+                                          },
                                           child: const Icon(Icons.delete),
                                         ),
                                       ],
@@ -309,6 +339,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  int _deleteIndex = -1;
+
   void _showDeleteConfirmationDialog(BuildContext context, int index) {
     showDialog(
       context: context,
@@ -319,6 +351,8 @@ class _HomePageState extends State<HomePage> {
             TextButton(
               child: const Text('Cancel'),
               onPressed: () {
+                _isDeleteDialogOpen = false;
+                _deleteIndex = -1;
                 Navigator.of(context).pop();
               },
             ),
@@ -327,6 +361,8 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 setState(() {
                   deleteTask(index);
+                  _isDeleteDialogOpen = false;
+                  _deleteIndex = -1;
                   Navigator.of(context).pop();
                 });
               },

@@ -26,7 +26,7 @@ class _UnCompleteState extends State<UnComplete> {
           width: double.infinity,
           height: 315,
           decoration: BoxDecoration(
-            color: themeManager.primaryColor,
+            //color: themeManager.primaryColor,
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.40),

@@ -19,7 +19,7 @@ class _ChartState extends State<Chart> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Chart'),
-        backgroundColor: themeManager.primaryColor,
+        // backgroundColor: themeManager.primaryColor,
         automaticallyImplyLeading: false,
       ),
       body: Column(

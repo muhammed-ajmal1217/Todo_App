@@ -12,10 +12,25 @@ class ThemeManager extends ChangeNotifier {
 
   static const String themeBoxName = 'theme_box';
   static const String selectedThemeKey = 'selected_theme';
+  
 
-  Color get primaryColor => _currentThemeType == ThemeType.dark
-      ? Color.fromARGB(255, 0, 0, 0)
-      : Color.fromARGB(255, 1, 59, 70);
+LinearGradient get primaryColorGradient => _currentThemeType == ThemeType.dark
+      ? LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Colors.orange,
+            Colors.amber,
+          ],
+        )
+      : LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+           Colors.black,
+           Colors.grey // Change this to your light theme background color
+          ],
+        );
   Color get floatingButtonColor => _currentThemeType == ThemeType.dark
       ? Colors.blueGrey
       : Color.fromARGB(255, 255, 102, 0);

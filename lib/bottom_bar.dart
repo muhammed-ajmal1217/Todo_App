@@ -49,7 +49,7 @@ int selectIndex = 0;
         child: currentScreen,
       ),
       bottomNavigationBar: BottomAppBar(
-        color: themeManager.primaryColor,
+        //color: themeManager.primaryColor,
         notchMargin: 10,
         child: SizedBox(
           height: 74,

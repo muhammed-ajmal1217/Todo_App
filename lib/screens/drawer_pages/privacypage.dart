@@ -11,7 +11,7 @@ class PrivacyPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 2,
-        backgroundColor: themeManager.primaryColor,
+        //backgroundColor: themeManager.primaryColor,
         title: Text(
           'Privacy Policy',
           style: TextStyle(color: Colors.white),
