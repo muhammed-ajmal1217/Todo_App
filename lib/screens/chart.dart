@@ -19,9 +19,12 @@ class _ChartState extends State<Chart> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Chart'),
-        // backgroundColor: themeManager.primaryColor,
+        elevation: 0,
         automaticallyImplyLeading: false,
-      ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: themeManager.primaryColorGradient,
+          ),)),
       body: Column(
         children: [
           FutureBuilder<List<TaskModel>>(
@@ -51,14 +54,14 @@ class _ChartState extends State<Chart> {
                           sections: [
                             PieChartSectionData(
                               value: completed,
-                              color: Color.fromARGB(255, 14, 2, 121),
-                              title: '${completed.toStringAsFixed(0)}%',titleStyle: TextStyle(color: Color.fromARGB(255, 31, 150, 20),fontSize: 50,fontWeight: FontWeight.w900),
+                              color: Color.fromARGB(255, 129, 245, 206),
+                              title: '${completed.toStringAsFixed(0)}%',titleStyle: TextStyle(color: Color.fromARGB(255, 31, 150, 20),fontSize: 50,fontWeight: FontWeight.w500),
                               radius: 40, 
                             ),
                             PieChartSectionData(
                               value: incompleted,
-                              color: const Color.fromARGB(255, 54, 206, 244),
-                              title: '${incompleted.toStringAsFixed(0)}%',titleStyle: TextStyle(color: Color.fromARGB(255, 224, 2, 2),fontSize: 50,fontWeight: FontWeight.w900),
+                              color: Color.fromARGB(255, 255, 148, 116),
+                              title: '${incompleted.toStringAsFixed(0)}%',titleStyle: TextStyle(color: Color.fromARGB(255, 224, 2, 2),fontSize: 50,fontWeight: FontWeight.w500),
                               radius: 40, 
                             ),
                           ],
@@ -74,9 +77,9 @@ class _ChartState extends State<Chart> {
             },
           ),
           SizedBox(height: 20,),
-          chartValues(color: Color.fromARGB(255, 14, 2, 121), text: "Completed Task's"),
+          chartValues(color: Color.fromARGB(255, 129, 245, 206), text: "Completed Task's"),
           SizedBox(height: 40,),
-          chartValues(color: const Color.fromARGB(255, 54, 206, 244), text: "Incomplete Task's")
+          chartValues(color: Color.fromARGB(255, 255, 148, 116), text: "Incomplete Task's")
         ],
       ),
     );

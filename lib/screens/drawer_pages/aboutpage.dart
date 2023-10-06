@@ -11,9 +11,15 @@ class AboutPage extends StatelessWidget {
     final themeManager = Provider.of<ThemeManager>(context);
     return Scaffold(
         appBar: AppBar(
-          //backgroundColor: themeManager.primaryColor,
-          title: Text('About'),
+        elevation: 0,
+        title: Text(
+          'About',
+          style: TextStyle(color: Colors.white),
         ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: themeManager.primaryColorGradient,
+          ),)),
         body: Padding(
           padding: const EdgeInsets.only(left: 20,right: 20),
           child: SingleChildScrollView(

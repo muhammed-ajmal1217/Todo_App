@@ -8,6 +8,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:todolist/functions/db_functions.dart';
 import 'package:todolist/screens/task_utils.dart';
+import 'package:todolist/screens/widget_pages/custom_container.dart';
 import 'package:todolist/screens/widget_pages/image_adding.dart';
 import 'package:todolist/screens/widget_pages/task_adding.dart';
 import 'package:todolist/screens/widget_pages/task_editing.dart';
@@ -25,7 +26,12 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-enum FilterCriteria { Daily, Weekly, Monthly, All }
+enum FilterCriteria {
+  Daily,
+  Weekly,
+  Monthly,
+  All,
+}
 
 FilterCriteria selectedFilter = FilterCriteria.Daily;
 
@@ -82,48 +88,81 @@ class _HomePageState extends State<HomePage> {
           );
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: themeManager.primaryColorGradient,
-          ),)),
+          elevation: 0,
+          automaticallyImplyLeading: false,
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: themeManager.primaryColorGradientApp,
+            ),
+          )),
       endDrawer: draWer(),
       body: SafeArea(
-        child: Column(
+        child: Stack(
           children: [
-            Stack(
-              children: [
-                Container(
-                  width: double.infinity,
-                  height: 220,
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.40),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                    gradient: themeManager.primaryColorGradient,
-                    borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(60),
-                      bottomRight: Radius.circular(60),
+            ClipPath(
+              clipper: MyCustomClipper(),
+              child: Container(
+                height: 400,
+                width: double.infinity,
+                color: themeManager.mainContainerBack,
+              ),
+            ),
+            ClipPath(
+              clipper: MyCustomClipper1(),
+              child: Container(
+                width: double.infinity,
+                height: 350,
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.40),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: const Offset(0, 4),
                     ),
-                  ),
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.only(bottom: 160, left: 15, right: 15),
-                    child: AnimatedSearchBar(
-                      onSearch: filterTasks,
-                    ),
+                  ],
+                  gradient: themeManager.primaryColorGradient,
+                ),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.only(bottom: 290, left: 15, right: 15),
+                  child: AnimatedSearchBar(
+                    onSearch: filterTasks,
                   ),
                 ),
-                Container(
-                  child: Positioned(
-                    top: 110,
-                    left: 15,
+              ),
+            ),
+// Positioned(
+//   top: 100,
+//   right: 20,
+//   child: ShaderMask(
+//     shaderCallback: (Rect bounds) {
+//       return LinearGradient(
+//         colors: [
+//           Color.fromARGB(255, 209, 155, 119),
+//           Color.fromARGB(255, 255, 0, 0),    
+//         ],
+//         tileMode: TileMode.clamp,
+//         begin: Alignment.topCenter,
+//         end: Alignment.bottomCenter,
+//       ).createShader(bounds);
+//     },
+//     child: Icon(
+//       Icons.subject_rounded,
+//       color: Colors.white,
+//       size: 170,
+//     ),
+//   ),
+// ),
+
+            Column(
+              children: [
+                SizedBox(
+                  height: 80,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15),
+                  child: Container(
                     child: Row(
                       children: [
                         Container(
@@ -147,7 +186,7 @@ class _HomePageState extends State<HomePage> {
                                 ImageFunction.showAddPhotoDialog(context),
                             child: ClipOval(
                               child: CircleAvatar(
-                                radius: 45,
+                                radius: 35,
                                 backgroundColor:
                                     const Color.fromARGB(255, 174, 198, 221),
                                 child: imageWidget,
@@ -163,175 +202,200 @@ class _HomePageState extends State<HomePage> {
                           style: const TextStyle(
                               color: Colors.white,
                               fontSize: 20,
-                              fontWeight: FontWeight.w100),
+                              fontWeight: FontWeight.w300),
                         )
                       ],
                     ),
                   ),
                 ),
-              ],
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8, right: 8),
-              child: Container(
-                height: 60,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: themeManager.headingsColor,
+                const SizedBox(
+                  height: 10,
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "All Task's",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w800,
-                            fontSize: 20,
-                            color: Colors.grey),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8, right: 8),
+                  child: Container(
+                    height: 60,
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "All Task's",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w300,
+                                fontSize: 15,
+                                color: Colors.white),
+                          ),
+                          DropdownButton<FilterCriteria>(
+                            borderRadius: BorderRadius.circular(10),
+                            elevation: 5,
+                            dropdownColor: Color.fromARGB(255, 224, 120, 120),
+                            style: TextStyle(color: Colors.white),
+                            icon: Icon(Icons.expand_more_outlined,color: Colors.white,),
+                            value: selectedFilter,
+                            onChanged: (newValue) {
+                              setState(() {
+                                selectedFilter = newValue!;
+                                filterTasks('');
+                              });
+                            },
+                            items: FilterCriteria.values.map((criteria) {
+                              return DropdownMenuItem<FilterCriteria>(
+                                value: criteria,
+                                child:
+                                    Text(criteria.toString().split('.').last),
+                              );
+                            }).toList(),
+                          ),
+                          FloatingActionButton(
+                            elevation: 6,
+                            highlightElevation: 3,
+                            backgroundColor: themeManager.floatingButtonColor,
+                            splashColor:
+                                const Color.fromARGB(255, 240, 189, 48),
+                            onPressed: () => showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Dialog(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16.0),
+                                  ),
+                                  child: SingleChildScrollView(
+                                    child: ShowDialogAdd(),
+                                  ),
+                                );
+                              },
+                            ),
+                            child: const Icon(Icons.add),
+                          ),
+                        ],
                       ),
-                      DropdownButton<FilterCriteria>(
-                        value: selectedFilter,
-                        onChanged: (newValue) {
-                          setState(() {
-                            selectedFilter = newValue!;
-                            filterTasks('');
-                          });
-                        },
-                        items: FilterCriteria.values.map((criteria) {
-                          return DropdownMenuItem<FilterCriteria>(
-                            value: criteria,
-                            child: Text(criteria.toString().split('.').last),
-                          );
-                        }).toList(),
-                      ),
-                      FloatingActionButton(
-                        backgroundColor: themeManager.floatingButtonColor,
-                        splashColor: const Color.fromARGB(255, 240, 189, 48),
-                        onPressed: () => showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Dialog(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16.0),
-                              ),
-                              child: SingleChildScrollView(
-                                child: ShowDialogAdd(),
-                              ),
-                            );
-                          },
-                        ),
-                        child: const Icon(Icons.add),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ),
-            Builder(
-              builder: (context) {
-                return ValueListenableBuilder(
-                  valueListenable: taskListNotifier,
-                  builder: (BuildContext ctx, List<TaskModel> studentList,
-                      Widget? child) {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      if (_isDeleteDialogOpen) {
-                        _showDeleteConfirmationDialog(context, _deleteIndex);
-                      }
-                    });
-                    return Expanded(
-                      child: ListView.builder(
-                        itemCount: filteredTasks.length,
-                        itemBuilder: (context, index) {
-                          final data = filteredTasks[index];
-                          return Container(
-                            width: 200,
-                            height: 100,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Card(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                elevation: 4,
+                Builder(
+                  builder: (context) {
+                    return ValueListenableBuilder(
+                      valueListenable: taskListNotifier,
+                      builder: (BuildContext ctx, List<TaskModel> studentList,
+                          Widget? child) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          if (_isDeleteDialogOpen) {
+                            _showDeleteConfirmationDialog(
+                                context, _deleteIndex);
+                          }
+                        });
+                        return Expanded(
+                          child: ListView.builder(
+                            itemCount: filteredTasks.length,
+                            itemBuilder: (context, index) {
+                              final data = filteredTasks[index];
+                              return Container(
+                                width: 200,
+                                height: 100,
                                 child: Padding(
-                                  padding: const EdgeInsets.only(top: 8),
-                                  child: ListTile(
-                                    title: Text(
-                                      data.taskName,
-                                      style: TextStyle(
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w500,
-                                        decoration: data.tasComplete
-                                            ? TextDecoration.lineThrough
-                                            : TextDecoration.none,
-                                      ),
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
                                     ),
-                                    subtitle: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '${DateFormat('MM/dd/yyyy').format(data.date)}',
-                                          style: const TextStyle(fontSize: 14),
-                                        ),
-                                        if (data.description.isNotEmpty)
-                                          Text(
-                                            '${data.description}',
-                                            style:
-                                                const TextStyle(fontSize: 14),
+                                    elevation: 10,
+                                    child: SingleChildScrollView(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(top: 8),
+                                        child: ListTile(
+                                          title: Text(
+                                            data.taskName,
+                                            style: TextStyle(
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.w500,
+                                              decoration: data.tasComplete
+                                                  ? TextDecoration.lineThrough
+                                                  : TextDecoration.none,
+                                            ),
                                           ),
-                                      ],
-                                    ),
-                                    leading: CustomCheckbox(
-                                      value: data.tasComplete,
-                                      onChanged: (newValue) {
-                                        setState(() {
-                                          checkBoxchanged(newValue, index);
-                                          data.tasComplete = newValue ?? false;
-                                        });
-                                      },
-                                    ),
-                                    trailing: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        InkWell(
-                                          onTap: () => showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return ShowDialogEdit(
-                                                  task: filteredTasks[index],
-                                                  index: index);
+                                          subtitle: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                '${DateFormat('MM/dd/yyyy').format(data.date)}',
+                                                style: const TextStyle(
+                                                    fontSize: 14),
+                                              ),
+                                              if (data.description.isNotEmpty)
+                                                Text(
+                                                  '${data.description}',
+                                                  style: const TextStyle(
+                                                      fontSize: 14),
+                                                ),
+                                            ],
+                                          ),
+                                          leading: CustomCheckbox(
+                                            value: data.tasComplete,
+                                            onChanged: (newValue) {
+                                              setState(() {
+                                                checkBoxchanged(
+                                                    newValue, index);
+                                                data.tasComplete =
+                                                    newValue ?? false;
+                                              });
                                             },
                                           ),
-                                          child: const Icon(Icons.edit),
+                                          trailing: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              InkWell(
+                                                onTap: () => showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return Dialog(
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(16.0),
+                                                      ),
+                                                      child:
+                                                          SingleChildScrollView(
+                                                        child: 
+                                                         ShowDialogEdit(
+                                                        task: filteredTasks[index],
+                                                        index: index),
+                                                      ),
+                                                    );
+                                                    
+                                                  },
+                                                ),
+                                                child: const Icon(Icons.edit),
+                                              ),
+                                              InkWell(
+                                                onTap: () {
+                                                  _deleteIndex = index;
+                                                  _isDeleteDialogOpen = true;
+                                                  setState(() {});
+                                                },
+                                                child: const Icon(Icons.delete),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                        InkWell(
-                                          onTap: () {
-                                            _deleteIndex = index;
-                                            _isDeleteDialogOpen = true;
-                                            setState(() {});
-                                          },
-                                          child: const Icon(Icons.delete),
-                                        ),
-                                      ],
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
+                              );
+                            },
+                          ),
+                        );
+                      },
                     );
                   },
-                );
-              },
+                )
+              ],
             )
           ],
         ),

@@ -29,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     final themeManager = Provider.of<ThemeManager>(context);
     return Scaffold(
-      //backgroundColor: themeManager.primaryColor,
+      backgroundColor: Color.fromARGB(255, 199, 126, 130),
       body: Column(
         children: [
           Padding(

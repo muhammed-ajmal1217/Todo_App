@@ -19,23 +19,46 @@ LinearGradient get primaryColorGradient => _currentThemeType == ThemeType.dark
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            Colors.orange,
-            Colors.amber,
-          ],
+           Colors.black,
+           Colors.black,
+          ],         
         )
       : LinearGradient(
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter,
+          
+          colors: [
+            Color.fromARGB(255, 117, 36, 36),
+            Color.fromARGB(255, 143, 52, 52),
+            Color.fromARGB(255, 167, 71, 71),
+            Color.fromARGB(255, 185, 98, 98),
+            Color.fromARGB(255, 201, 113, 113),
+          ],
+        );
+LinearGradient get primaryColorGradientApp => _currentThemeType == ThemeType.dark
+      ? LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
            Colors.black,
-           Colors.grey // Change this to your light theme background color
+           Colors.black,
+          ],         
+        )
+      : LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          
+          colors: [
+         Color.fromARGB(255, 201, 113, 113),
+         Color.fromARGB(255, 201, 113, 113),
           ],
         );
   Color get floatingButtonColor => _currentThemeType == ThemeType.dark
       ? Colors.blueGrey
       : Color.fromARGB(255, 255, 102, 0);
-  Color get headingsColor =>
-      _currentThemeType == ThemeType.dark ? Colors.grey[900]! : Colors.grey[100]!;
+  Color get mainContainerBack => _currentThemeType == ThemeType.dark
+      ? Color.fromARGB(255, 32, 33, 34)
+      : Color.fromARGB(255, 243, 215, 183);
   Color get pictureContainer => _currentThemeType == ThemeType.dark
       ? Colors.grey[900]!
       : Color.fromARGB(255, 1, 68, 80);
@@ -52,16 +75,19 @@ LinearGradient get primaryColorGradient => _currentThemeType == ThemeType.dark
 
   Color get smileyColors => _currentThemeType == ThemeType.dark
       ? Color.fromARGB(255, 37, 37, 37)
-      : Color.fromARGB(255, 1, 91, 107);
+      : Color.fromARGB(244, 231, 117, 9);
   Color get completedPageColors => _currentThemeType == ThemeType.dark
       ? Color.fromARGB(255, 19, 18, 18)
-      : Color.fromARGB(255, 223, 248, 236);
+      : Colors.white;
   Color get completedTaskColors => _currentThemeType == ThemeType.dark
-      ? Color.fromARGB(255, 14, 43, 1)
+      ? Color.fromARGB(255, 61, 61, 61)
       : Colors.green[100]!;
   Color get incompletedTaskColors => _currentThemeType == ThemeType.dark
-      ? Color.fromARGB(255, 54, 1, 1)
+      ? Color.fromARGB(255, 75, 74, 74)
       : Colors.red[100]!;
+  Color get splashColor => _currentThemeType == ThemeType.dark
+      ? Color.fromARGB(255, 0, 0, 0)
+      : Color.fromARGB(255, 179, 104, 104);
 
 void toggleTheme() async {
   if (_currentThemeType == ThemeType.light) {

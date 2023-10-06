@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:todolist/functions/db_functions.dart';
 import 'package:todolist/model/data_model.dart';
 import 'package:todolist/screens/widget_pages/checkbox_change.dart';
+import 'package:todolist/screens/widget_pages/custom_container.dart';
 
 import '../theme/theme_manager.dart';
 
@@ -19,63 +20,40 @@ class _UnCompleteState extends State<UnComplete> {
   @override
   Widget build(BuildContext context) {
     final themeManager = Provider.of<ThemeManager>(context);
+    final currentDate = DateTime.now();
     return Scaffold(
-        body: Column(
-      children: [
-        Container(
-          width: double.infinity,
-          height: 315,
-          decoration: BoxDecoration(
-            //color: themeManager.primaryColor,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.40),
-                spreadRadius: 2,
-                blurRadius: 5,
-                offset: Offset(0, 4),
+      body: Stack(
+        children: [
+          Positioned(
+            child: ClipPath(
+              clipper: MyCustomClipper(),
+              child: Container(
+                height: 500,
+                width: double.infinity,
+                color: themeManager.mainContainerBack,
               ),
-            ],
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(60),
-              bottomRight: Radius.circular(60),
             ),
           ),
-          child: Stack(
+          Positioned(
+            child: ClipPath(
+              clipper: MyCustomClipper1(),
+              child: Container(
+                height: 450,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    gradient: themeManager.primaryColorGradient
+                   ),
+              ),
+            ),
+          ),
+          Column(
             children: [
-              _completedIcons(110, 70, Icons.sentiment_dissatisfied_rounded,
-                  180, themeManager.smileyColors),
-              _completedIcons(110, 70, Icons.water_drop, 40, Colors.cyan),
-              _completedIcons(275, 110, Icons.water_drop, 30, Colors.cyan),
-              _completedIcons(125, 220, Icons.water_drop, 30, Colors.cyan),
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
-          child: Container(
-            width: double.infinity,
-            height: 40,
-            decoration: BoxDecoration(
-                color: themeManager.headingsColor,
-                borderRadius: BorderRadius.circular(10)),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    "Incomplete",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w800,
-                        fontSize: 20,
-                        color: Colors.grey),
-                  ),
-                ],
+              SizedBox(
+                height: 70,
               ),
-            ),
-          ),
-        ),
-        Builder(builder: (context) {
+              Image.asset('asset/PngItem_1022533.png',height: 50,),
+                  Text("Inomplete Tasks",style: TextStyle(color: Colors.white,fontSize: 30,fontWeight: FontWeight.w200),),
+              Builder(builder: (context) {
           return ValueListenableBuilder(
             valueListenable: taskListNotifier,
             builder:
@@ -95,7 +73,7 @@ class _UnCompleteState extends State<UnComplete> {
                         child: Card(
                           color: themeManager.incompletedTaskColors,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius: BorderRadius.circular(20),
                           ),
                           elevation: 4,
                           child: Padding(
@@ -142,19 +120,10 @@ class _UnCompleteState extends State<UnComplete> {
             },
           );
         }),
-      ],
-    ));
-  }
-
-  Positioned _completedIcons(
-      double left, double top, IconData icon, double iconSize, Color color) {
-    return Positioned(
-        left: left,
-        top: top,
-        child: Icon(
-          icon,
-          size: iconSize,
-          color: color,
-        ));
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }

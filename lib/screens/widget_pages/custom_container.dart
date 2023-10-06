@@ -18,7 +18,7 @@ class MyCustomClipper extends CustomClipper<Path> {
     path.quadraticBezierTo(
         waveControlPoint2.dx, waveControlPoint2.dy, waveEndPoint2.dx, waveEndPoint2.dy);
 
-    path.lineTo(size.width, 0); // Finish at the top-right corner
+    path.lineTo(size.width, 0); 
     return path;
   }
 

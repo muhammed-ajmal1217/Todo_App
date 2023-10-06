@@ -38,6 +38,7 @@ class _ShowDialogState extends State<ShowDialogEdit> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      elevation: 0,
       title: const Text('Edit Task'),
       content: Form(
         key: _formKey,

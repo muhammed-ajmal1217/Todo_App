@@ -28,7 +28,7 @@ class _CompletedState extends State<Completed> {
               child: Container(
                 height: 500,
                 width: double.infinity,
-                color: Color.fromARGB(255, 203, 204, 203),
+                color: themeManager.mainContainerBack,
               ),
             ),
           ),
@@ -39,7 +39,7 @@ class _CompletedState extends State<Completed> {
                 height: 450,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                    //color: themeManager.primaryColor,
+                    gradient: themeManager.primaryColorGradient
                    ),
               ),
             ),
@@ -47,10 +47,10 @@ class _CompletedState extends State<Completed> {
           Column(
             children: [
               SizedBox(
-                height: 50,
+                height: 70,
               ),
-              Icon(Icons.sentiment_satisfied_outlined,
-                  size: 100, color: themeManager.smileyColors),
+              Image.asset('asset/pngegg (1).png',height: 50,),
+                  Text("Completed Tasks",style: TextStyle(color: Colors.white,fontSize: 30,fontWeight: FontWeight.w200),),
               Builder(builder: (context) {
                 return ValueListenableBuilder(
                   valueListenable: taskListNotifier,
@@ -76,9 +76,9 @@ class _CompletedState extends State<Completed> {
                               child: Card(
                                 color: themeManager.completedTaskColors,
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5),
+                                  borderRadius: BorderRadius.circular(20),
                                 ),
-                                elevation: 4,
+                                elevation: 10,
                                 child: Padding(
                                   padding: const EdgeInsets.only(top: 8),
                                   child: ListTile(

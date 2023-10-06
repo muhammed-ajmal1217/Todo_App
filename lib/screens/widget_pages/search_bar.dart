@@ -33,11 +33,6 @@ class _AnimatedSearchBarState extends State<AnimatedSearchBar> {
       width: _isSearching ? 290.0 : 48,
       height: 50.0,
       alignment: _isSearching ? Alignment.centerLeft : Alignment.centerRight,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(80.0),
-        // color:
-        //    // _isSearching ? themeManager.searchIcons : themeManager.primaryColor,
-      ),
       child: Row(
         children: <Widget>[
           IconButton(
@@ -45,7 +40,7 @@ class _AnimatedSearchBarState extends State<AnimatedSearchBar> {
             icon: Icon(
               _isSearching ? Icons.close : Icons.search,
               size: 25,
-              color: Color.fromARGB(255, 204, 202, 202),
+              color: Color.fromARGB(255, 255, 255, 255),
             ),
             onPressed: () {
               setState(() {
@@ -66,7 +61,7 @@ class _AnimatedSearchBarState extends State<AnimatedSearchBar> {
                     decoration: InputDecoration(
                       hintText: 'Search...',
                       hintStyle:
-                          TextStyle(color: Color.fromARGB(255, 146, 144, 144)),
+                          TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
                       border: InputBorder.none,
                     ),
                     style: TextStyle(color: Colors.white),

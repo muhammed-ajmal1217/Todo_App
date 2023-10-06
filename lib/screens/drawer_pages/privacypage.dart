@@ -10,13 +10,16 @@ class PrivacyPage extends StatelessWidget {
     final themeManager = Provider.of<ThemeManager>(context);
     return Scaffold(
       appBar: AppBar(
-        elevation: 2,
-        //backgroundColor: themeManager.primaryColor,
+        elevation: 0,
         title: Text(
           'Privacy Policy',
           style: TextStyle(color: Colors.white),
         ),
-      ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: themeManager.primaryColorGradient,
+          ),)),
+      
       body: Padding(
         padding: EdgeInsets.all(15.0),
         child: SingleChildScrollView(
