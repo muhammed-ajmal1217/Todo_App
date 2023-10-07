@@ -40,12 +40,7 @@ class PrivacyPage extends StatelessWidget {
               headings('Information Collection and Use:'),
               spacing(5),
               content(
-                  'For a better experience, while using our Service, I may require you to provide us with certain personally identifiable information, including but not limited to Name . The information that I request will be retained on your device and is not collected by me in any way.The app does use third-party services that may collect information used to identify you.'),
-              spacing(10),
-              headings('Log data:'),
-              spacing(5),
-              content(
-                  'I want to inform you that whenever you use my Service, in a case of an error in the app I collect data and information (through third-party products) on your phone called Log Data. This Log Data may include information such as your device Internet Protocol (“IP”) address, device name, operating system version, the configuration of the app when utilizing my Service, the time and date of your use of the Service, and other statistics.'),
+                  'Todo App does not collect any personal data or information from its users. We respect your privacy, and we are committed to maintaining the confidentiality of any information you provide within the app.Since we do not collect any data, you can be assured that your personal information remains private and secure when using Todo App. We do not share any information with third parties Please note that this privacy policy may be subject to change in the future, should we decide to collect data for any reason. However, any changes to our privacy policy will be prominently communicated to users within the app.'),
               spacing(10),
               headings('Cookies:'),
               spacing(5),
@@ -82,11 +77,6 @@ class PrivacyPage extends StatelessWidget {
               spacing(5),
               content(
                   'This Service may contain links to other sites. If you click on a third-party link, you will be directed to that site. Note that these external sites are not operated by me. Therefore, I strongly advise you to review the Privacy Policy of these websites. I have no control over and assume no responsibility for the content, privacy policies, or practices of any third-party sites or services.'),
-              spacing(10),
-              headings("Childrens Privacy:"),
-              spacing(5),
-              content(
-                  'These Services do not address anyone under the age of 13. I do not knowingly collect personally identifiable information from children under 13 years of age. In the case I discover that a child under 13 has provided me with personal information, I immediately delete this from our servers. If you are a parent or guardian and you are aware that your child has provided us with personal information, please contact me so that I will be able to do the necessary actions.'),
               spacing(10),
               headings("Changes to This Privacy Policy"),
               spacing(5),

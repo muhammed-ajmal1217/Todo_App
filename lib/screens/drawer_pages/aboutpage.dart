@@ -51,17 +51,6 @@ class AboutPage extends StatelessWidget {
                   ],
                 ),
                 makeSpace(40),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Version:',
-                      style: TextStyle(fontWeight: FontWeight.w700),
-                    ),
-                    Text('20.0123'),
-                  ],
-                ),
-                makeSpace(40),
                 hedings('Description:'),
                 makeSpace(10),
                 const Text(
