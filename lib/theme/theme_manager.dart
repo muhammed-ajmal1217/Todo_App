@@ -15,7 +15,7 @@ class ThemeManager extends ChangeNotifier {
   
 
 LinearGradient get primaryColorGradient => _currentThemeType == ThemeType.dark
-      ? LinearGradient(
+      ? const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
@@ -23,7 +23,7 @@ LinearGradient get primaryColorGradient => _currentThemeType == ThemeType.dark
            Colors.black,
           ],         
         )
-      : LinearGradient(
+      : const LinearGradient(
           begin: Alignment.bottomCenter,
           end: Alignment.topCenter,
           
@@ -35,16 +35,17 @@ LinearGradient get primaryColorGradient => _currentThemeType == ThemeType.dark
             Color.fromARGB(255, 201, 113, 113),
           ],
         );
+// ignore: non_constant_identifier_names
 LinearGradient get IconColorHome => _currentThemeType == ThemeType.dark
-      ? LinearGradient(
+      ? const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-           Colors.black,
-           Colors.black,
+           Color.fromARGB(255, 46, 45, 45),
+           Color.fromARGB(255, 15, 15, 15),
           ],         
         )
-      : LinearGradient(
+      : const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           
@@ -56,62 +57,39 @@ LinearGradient get IconColorHome => _currentThemeType == ThemeType.dark
             Color.fromARGB(255, 90, 25, 25),
           ],
         );
-// LinearGradient get primaryColorGradientApp => _currentThemeType == ThemeType.dark
-//       ? LinearGradient(
-//           begin: Alignment.topLeft,
-//           end: Alignment.bottomRight,
-//           colors: [
-//            Colors.black,
-//            Colors.black,
-//           ],         
-//         )
-//       : LinearGradient(
-//           begin: Alignment.topLeft,
-//           end: Alignment.bottomRight,
-          
-//           colors: [
-//          Color.fromARGB(255, 201, 113, 113),
-//          Color.fromARGB(255, 201, 113, 113),
-//           ],
-//         );
   Color get floatingButtonColor => _currentThemeType == ThemeType.dark
       ? Colors.blueGrey
-      : Color.fromARGB(255, 255, 102, 0);
+      : const Color.fromARGB(255, 255, 102, 0);
   Color get primaryColorGradientApp => _currentThemeType == ThemeType.dark
       ? Colors.black
-      : Color.fromARGB(255, 201, 113, 113);
+      : const Color.fromARGB(255, 201, 113, 113);
   Color get mainContainerBack => _currentThemeType == ThemeType.dark
-      ? Color.fromARGB(255, 32, 33, 34)
-      : Color.fromARGB(255, 243, 215, 183);
-  Color get pictureContainer => _currentThemeType == ThemeType.dark
-      ? Colors.grey[900]!
-      : Color.fromARGB(255, 1, 68, 80);
+      ? const Color.fromARGB(255, 32, 33, 34)
+      : const Color.fromARGB(255, 243, 215, 183);
   Color get deleteIcons => _currentThemeType == ThemeType.dark
-      ? Color.fromARGB(255, 151, 143, 144)
-      : Color.fromARGB(255, 99, 90, 92);
-  Color get searchIcons => _currentThemeType == ThemeType.dark
-      ? Color.fromARGB(255, 20, 20, 20)
-      : Color.fromARGB(255, 1, 68, 80);
-
-  Color get draWerColors => _currentThemeType == ThemeType.dark
-      ? Color.fromARGB(255, 24, 24, 24)
-      : Color.fromARGB(255, 1, 59, 70);
-
-  Color get smileyColors => _currentThemeType == ThemeType.dark
-      ? Color.fromARGB(255, 37, 37, 37)
-      : Color.fromARGB(244, 231, 117, 9);
-  Color get completedPageColors => _currentThemeType == ThemeType.dark
-      ? Color.fromARGB(255, 19, 18, 18)
-      : Colors.white;
+      ? const Color.fromARGB(255, 151, 143, 144)
+      : const Color.fromARGB(255, 99, 90, 92);
   Color get completedTaskColors => _currentThemeType == ThemeType.dark
-      ? Color.fromARGB(255, 61, 61, 61)
+      ? const Color.fromARGB(255, 61, 61, 61)
       : Colors.green[100]!;
   Color get incompletedTaskColors => _currentThemeType == ThemeType.dark
-      ? Color.fromARGB(255, 75, 74, 74)
+      ? const Color.fromARGB(255, 61, 61, 61)
       : Colors.red[100]!;
   Color get splashColor => _currentThemeType == ThemeType.dark
-      ? Color.fromARGB(255, 0, 0, 0)
-      : Color.fromARGB(255, 179, 104, 104);
+      ? const Color.fromARGB(255, 0, 0, 0)
+      : const Color.fromARGB(255, 172, 91, 95);
+  Color get splashIconColor => _currentThemeType == ThemeType.dark
+      ? const Color.fromARGB(255, 66, 66, 66)
+      : const Color.fromARGB(255, 196, 110, 114);
+  Color get incompletedChart => _currentThemeType == ThemeType.dark
+      ? const Color.fromARGB(255, 36, 10, 129)
+      : const Color.fromARGB(255, 255, 148, 116);
+  Color get completedChart => _currentThemeType == ThemeType.dark
+      ? const Color.fromARGB(255, 10, 75, 129)
+      : const Color.fromARGB(255, 129, 245, 206);
+  Color get pictureBackground => _currentThemeType == ThemeType.dark
+      ? const Color.fromARGB(255, 59, 64, 68)
+      : const Color.fromARGB(255, 156, 89, 89);
 
 void toggleTheme() async {
   if (_currentThemeType == ThemeType.light) {

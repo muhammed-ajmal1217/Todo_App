@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todolist/bottom_bar.dart';
+import 'package:todolist/theme/theme_manager.dart';
 
 // ignore: must_be_immutable
 class SplashScreen extends StatefulWidget {
@@ -26,8 +28,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final themeManager = Provider.of<ThemeManager>(context);
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 172, 91, 95),
+      backgroundColor: themeManager.splashColor,
       body: Column(
         children: [
           Padding(
@@ -35,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
             child: Center(
               child:Column(
               children: [
-                const Icon(Icons.description_outlined,color:Color.fromARGB(255, 185, 115, 119) ,size: 100,),
+                Icon(Icons.description_outlined,color: themeManager.splashIconColor ,size: 100,),
                 if (isLoading)
                   const CircularProgressIndicator(color: Colors.greenAccent),
               ],

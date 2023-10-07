@@ -177,7 +177,7 @@ class _HomePageState extends State<HomePage> {
                             child: CircleAvatar(
                               radius: 40,
                               backgroundColor:
-                                  const Color.fromARGB(255, 156, 89, 89),
+                                  themeManager.pictureBackground,
                               child: imageWidget,
                             ),
                           ),
@@ -252,7 +252,7 @@ class _HomePageState extends State<HomePage> {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(16.0),
                                   ),
-                                  child: SingleChildScrollView(
+                                  child: const SingleChildScrollView(
                                     child: ShowDialogAdd(),
                                   ),
                                 );

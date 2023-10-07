@@ -54,13 +54,13 @@ class _ChartState extends State<Chart> {
                           sections: [
                             PieChartSectionData(
                               value: completed,
-                              color: Color.fromARGB(255, 129, 245, 206),
+                              color: themeManager.completedChart,
                               title: '${completed.toStringAsFixed(0)}%',titleStyle: TextStyle(color: Color.fromARGB(255, 31, 150, 20),fontSize: 50,fontWeight: FontWeight.w500),
                               radius: 40, 
                             ),
                             PieChartSectionData(
                               value: incompleted,
-                              color: Color.fromARGB(255, 255, 148, 116),
+                              color: themeManager.incompletedChart,
                               title: '${incompleted.toStringAsFixed(0)}%',titleStyle: TextStyle(color: Color.fromARGB(255, 224, 2, 2),fontSize: 50,fontWeight: FontWeight.w500),
                               radius: 40, 
                             ),
@@ -77,9 +77,9 @@ class _ChartState extends State<Chart> {
             },
           ),
           SizedBox(height: 20,),
-          chartValues(color: Color.fromARGB(255, 129, 245, 206), text: "Completed Task's"),
+          chartValues(color: themeManager.completedChart, text: "Completed Task's"),
           SizedBox(height: 40,),
-          chartValues(color: Color.fromARGB(255, 255, 148, 116), text: "Incomplete Task's")
+          chartValues(color: themeManager.incompletedChart, text: "Incomplete Task's")
         ],
       ),
     );

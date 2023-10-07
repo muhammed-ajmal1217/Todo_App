@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-
 import 'package:todolist/screens/chart.dart';
 import 'theme/theme_manager.dart';
 import 'screens/completed_page.dart';

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:todolist/functions/db_functions.dart';
@@ -25,14 +24,14 @@ void main() async {
   runApp(
     ChangeNotifierProvider.value(
       value: themeManager,
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
 
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +46,7 @@ class MyApp extends StatelessWidget {
           } else if (snapshot.hasData && snapshot.data != null) {
             return SplashScreen(username: snapshot.data!);
           } else {
-            return LoginPage();
+            return const LoginPage();
           }
         },
       ),

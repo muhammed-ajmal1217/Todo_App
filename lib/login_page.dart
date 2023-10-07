@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todolist/bottom_bar.dart';
 import 'package:todolist/screens/widget_pages/custom_container.dart';
-import 'package:todolist/splash.dart';
 import 'package:todolist/theme/theme_manager.dart';
 
 class LoginPage extends StatefulWidget {
