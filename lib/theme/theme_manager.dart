@@ -35,7 +35,7 @@ LinearGradient get primaryColorGradient => _currentThemeType == ThemeType.dark
             Color.fromARGB(255, 201, 113, 113),
           ],
         );
-LinearGradient get primaryColorGradientApp => _currentThemeType == ThemeType.dark
+LinearGradient get IconColorHome => _currentThemeType == ThemeType.dark
       ? LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -49,13 +49,37 @@ LinearGradient get primaryColorGradientApp => _currentThemeType == ThemeType.dar
           end: Alignment.bottomRight,
           
           colors: [
-         Color.fromARGB(255, 201, 113, 113),
-         Color.fromARGB(255, 201, 113, 113),
+            Color.fromARGB(255, 143, 52, 52),
+            Color.fromARGB(255, 167, 71, 71),
+            Color.fromARGB(255, 201, 113, 113),
+            Color.fromARGB(255, 143, 52, 52),
+            Color.fromARGB(255, 90, 25, 25),
           ],
         );
+// LinearGradient get primaryColorGradientApp => _currentThemeType == ThemeType.dark
+//       ? LinearGradient(
+//           begin: Alignment.topLeft,
+//           end: Alignment.bottomRight,
+//           colors: [
+//            Colors.black,
+//            Colors.black,
+//           ],         
+//         )
+//       : LinearGradient(
+//           begin: Alignment.topLeft,
+//           end: Alignment.bottomRight,
+          
+//           colors: [
+//          Color.fromARGB(255, 201, 113, 113),
+//          Color.fromARGB(255, 201, 113, 113),
+//           ],
+//         );
   Color get floatingButtonColor => _currentThemeType == ThemeType.dark
       ? Colors.blueGrey
       : Color.fromARGB(255, 255, 102, 0);
+  Color get primaryColorGradientApp => _currentThemeType == ThemeType.dark
+      ? Colors.black
+      : Color.fromARGB(255, 201, 113, 113);
   Color get mainContainerBack => _currentThemeType == ThemeType.dark
       ? Color.fromARGB(255, 32, 33, 34)
       : Color.fromARGB(255, 243, 215, 183);

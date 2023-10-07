@@ -8,7 +8,7 @@ class ShowDialogEdit extends StatefulWidget {
   final TaskModel task;
   final int index;
 
-  ShowDialogEdit({Key? key, required this.task, required this.index})
+  const ShowDialogEdit({Key? key, required this.task, required this.index})
       : super(key: key);
 
   @override
@@ -27,6 +27,7 @@ class _ShowDialogState extends State<ShowDialogEdit> {
   DateTime _dateTime = DateTime.now();
 
   List<HomePage> todolist = [];
+  @override
   void initState() {
     super.initState();
     _taskController.text = widget.task.taskName;

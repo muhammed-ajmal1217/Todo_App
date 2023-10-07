@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import '../../theme/theme_manager.dart';
 
 class AnimatedSearchBar extends StatefulWidget {
   final Function(String) onSearch;
-  AnimatedSearchBar({required this.onSearch});
+  const  AnimatedSearchBar({super.key, required this.onSearch});
   @override
+  // ignore: library_private_types_in_public_api
   _AnimatedSearchBarState createState() => _AnimatedSearchBarState();
 }
 
@@ -26,10 +24,9 @@ class _AnimatedSearchBarState extends State<AnimatedSearchBar> {
 
   @override
   Widget build(BuildContext context) {
-    final themeManager = Provider.of<ThemeManager>(context);
     return AnimatedContainer(
       curve: Curves.easeIn,
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       width: _isSearching ? 290.0 : 48,
       height: 50.0,
       alignment: _isSearching ? Alignment.centerLeft : Alignment.centerRight,
@@ -40,7 +37,7 @@ class _AnimatedSearchBarState extends State<AnimatedSearchBar> {
             icon: Icon(
               _isSearching ? Icons.close : Icons.search,
               size: 25,
-              color: Color.fromARGB(255, 255, 255, 255),
+              color: const Color.fromARGB(255, 255, 255, 255),
             ),
             onPressed: () {
               setState(() {
@@ -58,15 +55,15 @@ class _AnimatedSearchBarState extends State<AnimatedSearchBar> {
                     onChanged: (value) {
                       widget.onSearch(value);
                     },
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'Search...',
                       hintStyle:
                           TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
                       border: InputBorder.none,
                     ),
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   )
-                : SizedBox.shrink(),
+                : const SizedBox.shrink(),
           ),
         ],
       ),

@@ -249,8 +249,6 @@ class _draWerState extends State<draWer> {
     final nameBox = Hive.box('username_box');
     await nameBox.clear();
     await Future.delayed(Duration(seconds: 2));
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => LoginPage()),
-    );
+    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (ctx)=>LoginPage()), (route) => false);
   }
 }

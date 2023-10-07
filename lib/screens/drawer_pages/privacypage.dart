@@ -11,7 +11,7 @@ class PrivacyPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text(
+        title: const Text(
           'Privacy Policy',
           style: TextStyle(color: Colors.white),
         ),
@@ -21,7 +21,7 @@ class PrivacyPage extends StatelessWidget {
           ),)),
       
       body: Padding(
-        padding: EdgeInsets.all(15.0),
+        padding: const EdgeInsets.all(15.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,11 +107,11 @@ class PrivacyPage extends StatelessWidget {
   Row servicePoints(String text3) {
     return Row(
       children: [
-        Icon(
+        const Icon(
           Icons.circle,
           size: 8,
         ),
-        SizedBox(
+        const SizedBox(
           width: 6,
         ),
         Text(text3),
@@ -132,7 +132,7 @@ class PrivacyPage extends StatelessWidget {
   Text headings(String text1) {
     return Text(
       text1,
-      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
     );
   }
 }

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:todolist/bottom_bar.dart';
-import 'package:todolist/theme/theme_manager.dart';
 
+// ignore: must_be_immutable
 class SplashScreen extends StatefulWidget {
   String username;
   SplashScreen({super.key, required this.username});
@@ -17,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 2), () {
       setState(() {
         isLoading = false;
       });
@@ -27,9 +26,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final themeManager = Provider.of<ThemeManager>(context);
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 199, 126, 130),
+      backgroundColor: const Color.fromARGB(255, 172, 91, 95),
       body: Column(
         children: [
           Padding(
@@ -37,9 +35,9 @@ class _SplashScreenState extends State<SplashScreen> {
             child: Center(
               child:Column(
               children: [
-                Image.asset('asset/42430-removebg-preview.png',height: 110,),
+                const Icon(Icons.description_outlined,color:Color.fromARGB(255, 185, 115, 119) ,size: 100,),
                 if (isLoading)
-                  CircularProgressIndicator(color: Colors.greenAccent),
+                  const CircularProgressIndicator(color: Colors.greenAccent),
               ],
             ),
             ),
@@ -55,7 +53,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> gotoHome(BuildContext context) async {
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 1));
+    // ignore: use_build_context_synchronously
     Navigator.of(context).push(MaterialPageRoute(
       builder: (ctx) => BottomNavigation(username: widget.username),
     ));

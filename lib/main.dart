@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:todolist/functions/db_functions.dart';
@@ -44,7 +45,6 @@ class MyApp extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Container(); 
           } else if (snapshot.hasData && snapshot.data != null) {
-
             return SplashScreen(username: snapshot.data!);
           } else {
             return LoginPage();

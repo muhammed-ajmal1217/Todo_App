@@ -5,7 +5,7 @@ import 'package:todolist/model/data_model.dart';
 
 class ShowDialogAdd extends StatefulWidget {
   
-   ShowDialogAdd({super.key});
+   const ShowDialogAdd({super.key});
 
   @override
   State<ShowDialogAdd> createState() => _ShowDialogState();
@@ -114,7 +114,6 @@ class _ShowDialogState extends State<ShowDialogAdd> {
 
                       Navigator.of(context).pop();
                     }
-                    print('Data is Empty');
                   }),
               TextButton(
                   child: const Text('Cancel'),
@@ -125,35 +124,37 @@ class _ShowDialogState extends State<ShowDialogAdd> {
     );
   }
     Future<void> saveTask() async {
-    final _task = _taskController.text.trim();
-    final _date = _dateTime;
-    final _descriPtion = _discriptController.text.trim();
+    final task0 = _taskController.text.trim();
+    final date = _dateTime;
+    final descriPtion = _discriptController.text.trim();
     final task = TaskModel(
-        taskName: _task,
+        taskName: task0,
         tasComplete: false,
-        date: _date,
-        description: _descriPtion);
+        date: date,
+        description: descriPtion);
     await addtask(task);
     _taskController.clear();
     _dateController.clear();
     _discriptController.clear();
   }
   
-  void _showDatePicker() {
-    showDatePicker(
-      context: context,
-      initialDate: _dateTime,
-      firstDate: DateTime(2020),
-      lastDate: DateTime(2060),
-    ).then((value) {
-      if (value != null) {
-        setState(() {
-          _dateTime = value;
-          _dateController.text = _formatDate(value);
-        });
-      }
-    });
-  }
+void _showDatePicker() {
+
+  showDatePicker(
+    context: context,
+    initialDate: _dateTime,
+    firstDate: DateTime(2020),
+    lastDate: DateTime(2060),
+  ).then((value) {
+    if (value != null) {
+      setState(() {
+        _dateTime = value;
+        _dateController.text = _formatDate(value);
+      });
+    }
+  });
+}
+
 
   String _formatDate(DateTime date) {
     return DateFormat('MM/dd/yyyy').format(date);

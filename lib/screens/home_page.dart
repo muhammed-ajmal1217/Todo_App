@@ -1,3 +1,4 @@
+// ignore_for_file: constant_identifier_names
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ import 'package:todolist/screens/widget_pages/drawer.dart';
 import 'package:todolist/screens/widget_pages/search_bar.dart';
 import 'package:todolist/theme/theme_manager.dart';
 
+// ignore: must_be_immutable
 class HomePage extends StatefulWidget {
   String username;
   HomePage({Key? key, required this.username}) : super(key: key);
@@ -84,15 +86,16 @@ class _HomePageState extends State<HomePage> {
         : const Icon(
             Icons.party_mode_outlined,
             color: Colors.white,
-            size: 40,
+            size: 30,
           );
+
     return Scaffold(
       appBar: AppBar(
           elevation: 0,
           automaticallyImplyLeading: false,
           flexibleSpace: Container(
             decoration: BoxDecoration(
-              gradient: themeManager.primaryColorGradientApp,
+              color: themeManager.primaryColorGradientApp,
             ),
           )),
       endDrawer: draWer(),
@@ -132,80 +135,65 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-// Positioned(
-//   top: 100,
-//   right: 20,
-//   child: ShaderMask(
-//     shaderCallback: (Rect bounds) {
-//       return LinearGradient(
-//         colors: [
-//           Color.fromARGB(255, 209, 155, 119),
-//           Color.fromARGB(255, 255, 0, 0),    
-//         ],
-//         tileMode: TileMode.clamp,
-//         begin: Alignment.topCenter,
-//         end: Alignment.bottomCenter,
-//       ).createShader(bounds);
-//     },
-//     child: Icon(
-//       Icons.subject_rounded,
-//       color: Colors.white,
-//       size: 170,
-//     ),
-//   ),
-// ),
-
+            Positioned(
+              top: 30,
+              right: 0,
+              child: ShaderMask(
+                shaderCallback: (Rect bounds) {
+                  return themeManager.IconColorHome.createShader(bounds);
+                },
+                child: const Icon(
+                  Icons.subject_rounded,
+                  color: Colors.white,
+                  size: 170,
+                ),
+              ),
+            ),
             Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 80,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 15),
-                  child: Container(
-                    child: Row(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.40),
-                                spreadRadius: 2,
-                                blurRadius: 5,
-                                offset: const Offset(0, 4),
-                              ),
-                            ],
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: const Color.fromARGB(255, 185, 184, 184),
-                              width: 1.0,
+                  child: Row(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.40),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              offset: const Offset(0, 4),
                             ),
-                          ),
-                          child: GestureDetector(
-                            onTap: () =>
-                                ImageFunction.showAddPhotoDialog(context),
-                            child: ClipOval(
-                              child: CircleAvatar(
-                                radius: 35,
-                                backgroundColor:
-                                    const Color.fromARGB(255, 174, 198, 221),
-                                child: imageWidget,
-                              ),
+                          ],
+                          shape: BoxShape.circle,
+                        ),
+                        child: GestureDetector(
+                          onTap: () =>
+                              ImageFunction.showAddPhotoDialog(context),
+                          child: ClipOval(
+                            child: CircleAvatar(
+                              radius: 40,
+                              backgroundColor:
+                                  const Color.fromARGB(255, 156, 89, 89),
+                              child: imageWidget,
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        Text(
-                          widget.username,
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w300),
-                        )
-                      ],
-                    ),
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      Text(
+                        widget.username,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w300),
+                      )
+                    ],
                   ),
                 ),
                 const SizedBox(
@@ -213,7 +201,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 8, right: 8),
-                  child: Container(
+                  child: SizedBox(
                     height: 60,
                     width: double.infinity,
                     child: Padding(
@@ -231,9 +219,12 @@ class _HomePageState extends State<HomePage> {
                           DropdownButton<FilterCriteria>(
                             borderRadius: BorderRadius.circular(10),
                             elevation: 5,
-                            dropdownColor: Color.fromARGB(255, 224, 120, 120),
-                            style: TextStyle(color: Colors.white),
-                            icon: Icon(Icons.expand_more_outlined,color: Colors.white,),
+                            dropdownColor: themeManager.primaryColorGradientApp,
+                            style: const TextStyle(color: Colors.white),
+                            icon: const Icon(
+                              Icons.expand_more_outlined,
+                              color: Colors.white,
+                            ),
                             value: selectedFilter,
                             onChanged: (newValue) {
                               setState(() {
@@ -251,7 +242,6 @@ class _HomePageState extends State<HomePage> {
                           ),
                           FloatingActionButton(
                             elevation: 6,
-                            highlightElevation: 3,
                             backgroundColor: themeManager.floatingButtonColor,
                             splashColor:
                                 const Color.fromARGB(255, 240, 189, 48),
@@ -292,7 +282,7 @@ class _HomePageState extends State<HomePage> {
                             itemCount: filteredTasks.length,
                             itemBuilder: (context, index) {
                               final data = filteredTasks[index];
-                              return Container(
+                              return SizedBox(
                                 width: 200,
                                 height: 100,
                                 child: Padding(
@@ -302,9 +292,9 @@ class _HomePageState extends State<HomePage> {
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                     elevation: 10,
-                                    child: SingleChildScrollView(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(top: 8),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 8),
+                                      child: SingleChildScrollView(
                                         child: ListTile(
                                           title: Text(
                                             data.taskName,
@@ -321,13 +311,13 @@ class _HomePageState extends State<HomePage> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                '${DateFormat('MM/dd/yyyy').format(data.date)}',
+                                                DateFormat('MM/dd/yyyy').format(data.date),
                                                 style: const TextStyle(
                                                     fontSize: 14),
                                               ),
                                               if (data.description.isNotEmpty)
                                                 Text(
-                                                  '${data.description}',
+                                                  data.description,
                                                   style: const TextStyle(
                                                       fontSize: 14),
                                                 ),
@@ -361,13 +351,12 @@ class _HomePageState extends State<HomePage> {
                                                       ),
                                                       child:
                                                           SingleChildScrollView(
-                                                        child: 
-                                                         ShowDialogEdit(
-                                                        task: filteredTasks[index],
-                                                        index: index),
+                                                        child: ShowDialogEdit(
+                                                            task: filteredTasks[
+                                                                index],
+                                                            index: index),
                                                       ),
                                                     );
-                                                    
                                                   },
                                                 ),
                                                 child: const Icon(Icons.edit),
@@ -404,7 +393,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   int _deleteIndex = -1;
-
   void _showDeleteConfirmationDialog(BuildContext context, int index) {
     showDialog(
       context: context,

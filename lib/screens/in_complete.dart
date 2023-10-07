@@ -20,7 +20,7 @@ class _UnCompleteState extends State<UnComplete> {
   @override
   Widget build(BuildContext context) {
     final themeManager = Provider.of<ThemeManager>(context);
-    final currentDate = DateTime.now();
+    // final currentDate = DateTime.now();
     return Scaffold(
       body: Stack(
         children: [
@@ -48,11 +48,11 @@ class _UnCompleteState extends State<UnComplete> {
           ),
           Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 70,
               ),
               Image.asset('asset/PngItem_1022533.png',height: 50,),
-                  Text("Inomplete Tasks",style: TextStyle(color: Colors.white,fontSize: 30,fontWeight: FontWeight.w200),),
+                  const Text("Inomplete Tasks",style: TextStyle(color: Colors.white,fontSize: 30,fontWeight: FontWeight.w200),),
               Builder(builder: (context) {
           return ValueListenableBuilder(
             valueListenable: taskListNotifier,
@@ -65,7 +65,7 @@ class _UnCompleteState extends State<UnComplete> {
                   itemCount: incompleteTasks.length,
                   itemBuilder: (context, index) {
                     final data = incompleteTasks[index];
-                    return Container(
+                    return SizedBox(
                       width: 200,
                       height: 100,
                       child: Padding(
@@ -81,7 +81,7 @@ class _UnCompleteState extends State<UnComplete> {
                             child: ListTile(
                               title: Text(
                                 data.taskName,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 17,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -90,14 +90,13 @@ class _UnCompleteState extends State<UnComplete> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      '${DateFormat('MM/dd/yyyy').format(data.date)}',
-                                      style: TextStyle(fontSize: 14),
+                                      DateFormat('MM/dd/yyyy').format(data.date),
+                                      style: const TextStyle(fontSize: 14),
                                     ),
-                                    if (data.description != null &&
-                                        data.description.isNotEmpty)
+                                    if (data.description.isNotEmpty)
                                       Text(
-                                        '${data.description}',
-                                        style: TextStyle(fontSize: 14),
+                                        data.description,
+                                        style: const TextStyle(fontSize: 14),
                                       ),
                                   ],
                                 ),
