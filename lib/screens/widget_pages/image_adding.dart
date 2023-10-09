@@ -2,14 +2,23 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:todolist/functions/db_functions.dart';
 
 class ImageFunction {
   static Future<void> showAddPhotoDialog(BuildContext context) async {
     final ImagePicker imagePicker = ImagePicker();
     File? file;
+      final cameraPermission = await Permission.camera.request();
+  if (cameraPermission.isDenied) {
+    return null;
+  }
+  final galleryPermission = await Permission.photos.request();
+  if (galleryPermission.isDenied) {
+    return null;
+  }
 
-    showDialog(
+   await showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -30,7 +39,7 @@ class ImageFunction {
                           if (selectedImage != null) {
                             file = File(selectedImage.path);
                             storeImageInHive(file!);
-                            Navigator.of(context).pop();
+                            Navigator.of(context).pop(file);
                           }
                         },
                         backgroundColor: Colors.red,
@@ -47,7 +56,7 @@ class ImageFunction {
                           if (selectedImage != null) {
                             file = File(selectedImage.path);
                             storeImageInHive(file!);
-                            Navigator.of(context).pop();
+                            Navigator.of(context).pop(file);
                           }
                         },
                         backgroundColor: const Color.fromARGB(255, 241, 218, 6),
@@ -65,14 +74,14 @@ class ImageFunction {
                 TextButton(
                   onPressed: () {
                     deleteStoredImage();
-                    Navigator.of(context).pop();
+                    Navigator.of(context).pop(null);
                   },
                   child: const Text('Delete Image'),
                 ),
                 TextButton(
                   child: const Text('Cancel'),
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    Navigator.of(context).pop(null);
                   },
                 ),
               ],

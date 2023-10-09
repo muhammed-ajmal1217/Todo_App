@@ -31,11 +31,7 @@ class AboutPage extends StatelessWidget {
                     padding: EdgeInsets.all(18.0),
                     child: CircleAvatar(
                       radius: 50,
-                      backgroundColor: Colors.blueGrey,
-                      child: Icon(
-                        Icons.camera_alt_outlined,
-                        size: 30,
-                      ),
+                      backgroundImage: AssetImage('asset/app_logo.png'),
                     ),
                   ),
                 ),

@@ -29,13 +29,13 @@ class PrivacyPage extends StatelessWidget {
               headings('Privacy Policy:'),
               spacing(5),
               content(
-                  'Muhammed Ajmal built the ToDo app as a Free app. This SERVICE is provided by Muhammed Ajmal at no cost and is intended for use as is.'),
+                  'Muhammed Ajmal built the Todo App as a Free app. This SERVICE is provided by Muhammed Ajmal at no cost and is intended for use as is.'),
               spacing(5),
               content(
                   'This page is used to inform visitors regarding my policies with the collection, use, and disclosure of Personal Information if anyone decided to use my Service.If you choose to use my Service, then you agree to the collection and use of information in relation to this policy. The Personal Information that I collect is used for providing and improving the Service. I will not use or share your information with anyone except as described in this Privacy Policy.'),
               spacing(5),
               content(
-                  'The terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, which are accessible at ToDo unless otherwise defined in this Privacy Policy.'),
+                  'The terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, which are accessible at Todo unless otherwise defined in this Privacy Policy.'),
               spacing(10),
               headings('Information Collection and Use:'),
               spacing(5),
@@ -67,11 +67,6 @@ class PrivacyPage extends StatelessWidget {
               spacing(10),
               content(
                   'I want to inform users of this Service that these third parties have access to their Personal Information. The reason is to perform the tasks assigned to them on our behalf. However, they are obligated not to disclose or use the information for any other purpose'),
-              spacing(10),
-              headings('Security:'),
-              spacing(5),
-              content(
-                  'I value your trust in providing us your Personal Information, thus we are striving to use commercially acceptable means of protecting it. But remember that no method of transmission over the internet, or method of electronic storage is 100% secure and reliable, and I cannot guarantee its absolute security.'),
               spacing(10),
               headings('Links to Other Sites:'),
               spacing(5),
