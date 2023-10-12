@@ -241,7 +241,6 @@ class _draWerState extends State<draWer> {
   void resetApp(BuildContext context) async {
     final sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.clear();
-
     final taskbox = Hive.box<TaskModel>('task_db');
     await taskbox.clear();
     final pictureBox = Hive.box('profile_picture_box');

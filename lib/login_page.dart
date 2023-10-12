@@ -272,7 +272,7 @@ class _LoginPageState extends State<LoginPage> {
       await usernameBox.put('username', name);
       await Future.delayed(const Duration(seconds: 2));
       // ignore: use_build_context_synchronously
-      Navigator.of(ctx).pop();
+      // Navigator.of(ctx).pop();
 
       // ignore: use_build_context_synchronously
       navigateToBottomNavigation(ctx);
