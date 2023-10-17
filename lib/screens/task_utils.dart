@@ -33,7 +33,7 @@ List<TaskModel> filterTasksByCriteria(List<TaskModel> tasks, FilterCriteria sele
   }
   
 }
- void checkBoxchanged(bool? value, int index) async {
+    void checkBoxchanged(bool? value, int index) async {
       final taskDb = Hive.box<TaskModel>('task_db');
       final task = taskDb.getAt(index);
       if (task != null) {
