@@ -3,8 +3,10 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todolist1/controller.dart/functions/db_functions.dart';
-import 'package:todolist1/screens/login.dart';
-import 'package:todolist1/screens/splash.dart';
+// import 'package:todolist1/controller.dart/functions/filter_provider.dart';
+import 'package:todolist1/controller.dart/provider.dart';
+import 'package:todolist1/views/login.dart';
+import 'package:todolist1/views/splash.dart';
 import 'package:todolist1/controller.dart/theme/theme_manager.dart';
 import 'package:todolist1/model/data_model.dart';
 
@@ -16,8 +18,7 @@ void main() async {
   }
   await Hive.openBox('profile_picture_box');
   await Hive.openBox('username_box');
-  final taskDb = await Hive.openBox<TaskModel>('task_db');
-  taskListNotifier.value = taskDb.values.toList();
+  await Hive.openBox<TaskModel>('task_db');
   final themeManager = ThemeManager();
   await themeManager.initializeTheme();
 
@@ -36,25 +37,35 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeManager = Provider.of<ThemeManager>(context);
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: FutureBuilder<String?>(
-        future: _getUsername(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Container(); 
-          } else if (snapshot.hasData && snapshot.data != null) {
-            return SplashScreen(username: snapshot.data!);
-          } else {
-            return const LoginPage();
-          }
-        },
+    return MultiProvider(providers: [
+      ChangeNotifierProvider(create: (context) => HomeProvider()),
+      ChangeNotifierProvider(create: (context) => dbProvider()),
+      ChangeNotifierProvider(create: (context) => SplashProvider()),
+      ChangeNotifierProvider(create: (context) => ResetProvider()),
+      ChangeNotifierProvider(create: (context) => SearchProvider()),
+      ChangeNotifierProvider(create: (context) => BottomNavigationProvider(username: '')),
+      
+    ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: FutureBuilder<String?>(
+          future: _getUsername(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Container(); 
+            } else if (snapshot.hasData && snapshot.data != null) {
+              return SplashScreen(username: snapshot.data!);
+            } else {
+              return const LoginPage();
+            }
+          },
+        ),
+        theme: themeManager.currentTheme,
+        darkTheme: ThemeData.dark(),
+        themeMode: themeManager.currentThemeType == ThemeType.dark
+            ? ThemeMode.dark
+            : ThemeMode.light,
       ),
-      theme: themeManager.currentTheme,
-      darkTheme: ThemeData.dark(),
-      themeMode: themeManager.currentThemeType == ThemeType.dark
-          ? ThemeMode.dark
-          : ThemeMode.light,
     );
   }
 

@@ -1,61 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:todolist1/screens/chart.dart';
+import 'package:todolist1/controller.dart/provider.dart';
+import 'package:todolist1/views/chart.dart';
 import '../controller.dart/theme/theme_manager.dart';
 import 'completed_page.dart';
 import 'home_page.dart';
 import 'in_complete.dart';
 
-class BottomNavigation extends StatefulWidget {
+class BottomNavigation extends StatelessWidget {
   final String username;
-
-  const BottomNavigation({super.key, required this.username});
-
-  @override
-  State<BottomNavigation> createState() => _BottomNavigationState();
-}
-
-class _BottomNavigationState extends State<BottomNavigation> {
-  int selectIndex = 0;
-
-  List<Widget> widgetOptions = [];
-  late Widget currentScreen;
-
-  @override
-  void initState() {
-    super.initState();
-    widgetOptions = [
-      HomePage(username: widget.username),
-      const Completed(),
-      const UnComplete(),
-      const Chart(),
-    ];
-    currentScreen = widgetOptions[selectIndex];
-  }
-
+  BottomNavigation({super.key, required this.username});
   final PageStorageBucket bucket = PageStorageBucket();
 
   @override
   Widget build(BuildContext context) {
+    final bottomNavigationProvider =
+        Provider.of<BottomNavigationProvider>(context, listen: false);
+    final indexPro =
+        Provider.of<BottomNavigationProvider>(context, listen: true);
     final themeManager = Provider.of<ThemeManager>(context);
+    bottomNavigationProvider.widgetOptions = [
+      HomePage(username: username),
+      const Completed(),
+      UnComplete(),
+      const Chart(),
+    ];
+    bottomNavigationProvider.currentScreen;
     return WillPopScope(
       onWillPop: () async {
         SystemNavigator.pop();
-        return true; 
+        return true;
       },
       child: Scaffold(
         backgroundColor: Colors.white,
         body: PageStorage(
           bucket: bucket,
-          child: currentScreen,
+          child: Provider.of<BottomNavigationProvider>(context, listen: false)
+              .currentScreen,
         ),
         bottomNavigationBar: BottomAppBar(
-          color: Colors.transparent, 
-          elevation: 0, 
+          color: Colors.transparent,
+          elevation: 0,
           child: Container(
             decoration: BoxDecoration(
-              gradient: themeManager.primaryColorGradient, 
+              gradient: themeManager.primaryColorGradient,
             ),
             child: SizedBox(
               height: 74,
@@ -64,10 +53,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                 children: <Widget>[
                   MaterialButton(
                     onPressed: () {
-                      setState(() {
-                        currentScreen = HomePage(username: widget.username);
-                        selectIndex = 0;
-                      });
+                      bottomNavigationProvider.navigateToPage(0);
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -75,12 +61,16 @@ class _BottomNavigationState extends State<BottomNavigation> {
                         Icon(
                           Icons.home_outlined,
                           size: 30,
-                          color: selectIndex == 0 ? Colors.orange : Colors.white,
+                          color: indexPro.selectIndex == 0
+                              ? Colors.orange
+                              : Colors.white,
                         ),
                         Text(
                           'Home',
                           style: TextStyle(
-                            color: selectIndex == 0 ? Colors.orange : Colors.white,
+                            color: indexPro.selectIndex == 0
+                                ? Colors.orange
+                                : Colors.white,
                           ),
                         )
                       ],
@@ -88,10 +78,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                   ),
                   MaterialButton(
                     onPressed: () {
-                      setState(() {
-                        currentScreen = const Completed();
-                        selectIndex = 1;
-                      });
+                      bottomNavigationProvider.navigateToPage(1);
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -99,12 +86,16 @@ class _BottomNavigationState extends State<BottomNavigation> {
                         Icon(
                           Icons.task_alt_outlined,
                           size: 30,
-                          color: selectIndex == 1 ? Colors.orange : Colors.white,
+                          color: indexPro.selectIndex == 1
+                              ? Colors.orange
+                              : Colors.white,
                         ),
                         Text(
                           'Complete',
                           style: TextStyle(
-                            color: selectIndex == 1 ? Colors.orange : Colors.white,
+                            color: indexPro.selectIndex == 1
+                                ? Colors.orange
+                                : Colors.white,
                           ),
                         )
                       ],
@@ -112,10 +103,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                   ),
                   MaterialButton(
                     onPressed: () {
-                      setState(() {
-                        currentScreen = const UnComplete();
-                        selectIndex = 2;
-                      });
+                      bottomNavigationProvider.navigateToPage(2);
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -123,12 +111,16 @@ class _BottomNavigationState extends State<BottomNavigation> {
                         Icon(
                           Icons.rule,
                           size: 30,
-                          color: selectIndex == 2 ? Colors.orange : Colors.white,
+                          color: indexPro.selectIndex == 2
+                              ? Colors.orange
+                              : Colors.white,
                         ),
                         Text(
                           'Incomplete',
                           style: TextStyle(
-                            color: selectIndex == 2 ? Colors.orange : Colors.white,
+                            color: indexPro.selectIndex == 2
+                                ? Colors.orange
+                                : Colors.white,
                           ),
                         )
                       ],
@@ -136,10 +128,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                   ),
                   MaterialButton(
                     onPressed: () {
-                      setState(() {
-                        currentScreen = const Chart();
-                        selectIndex = 3;
-                      });
+                      bottomNavigationProvider.navigateToPage(3);
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -147,12 +136,16 @@ class _BottomNavigationState extends State<BottomNavigation> {
                         Icon(
                           Icons.leaderboard_outlined,
                           size: 30,
-                          color: selectIndex == 3 ? Colors.orange : Colors.white,
+                          color: indexPro.selectIndex == 3
+                              ? Colors.orange
+                              : Colors.white,
                         ),
                         Text(
                           'Chart',
                           style: TextStyle(
-                            color: selectIndex == 3 ? Colors.orange : Colors.white,
+                            color: indexPro.selectIndex == 3
+                                ? Colors.orange
+                                : Colors.white,
                           ),
                         )
                       ],

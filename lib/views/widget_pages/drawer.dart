@@ -1,25 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:todolist1/screens/aboutpage.dart';
-import 'package:todolist1/screens/terms_&_conditions.dart';
-import 'package:todolist1/model/data_model.dart';
-import 'package:todolist1/screens/login.dart';
+import 'package:todolist1/controller.dart/provider.dart';
+import 'package:todolist1/views/aboutpage.dart';
+import 'package:todolist1/views/terms_&_conditions.dart';
 import 'package:todolist1/controller.dart/theme/theme_manager.dart';
 
 // ignore: camel_case_types
-class draWer extends StatefulWidget {
+class draWer extends StatelessWidget {
   const draWer({Key? key}) : super(key: key);
   @override
-  State<draWer> createState() => _draWerState();
-}
-
-// ignore: camel_case_types
-class _draWerState extends State<draWer> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {   
     final themeManager = Provider.of<ThemeManager>(context);
     return Drawer(
       elevation: 5,
@@ -167,7 +158,7 @@ class _draWerState extends State<draWer> {
                     actions: <Widget>[
                       TextButton(
                           onPressed: () {
-                            resetApp(context);
+                           Provider.of<ResetProvider>(context,listen:false).resetApp(context);
                             showDialog(
                               context: context,
                               barrierDismissible: false,
@@ -238,19 +229,5 @@ class _draWerState extends State<draWer> {
         ],
       ),
     );
-  }
-
-  void resetApp(BuildContext context) async {
-    final sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.clear();
-    final taskbox = Hive.box<TaskModel>('task_db');
-    await taskbox.clear();
-    final pictureBox = Hive.box('profile_picture_box');
-    await pictureBox.clear();
-    final nameBox = Hive.box('username_box');
-    await nameBox.clear();
-    await Future.delayed(const Duration(seconds: 2));
-    // ignore: use_build_context_synchronously
-    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (ctx)=>const LoginPage()), (route) => false);
   }
 }

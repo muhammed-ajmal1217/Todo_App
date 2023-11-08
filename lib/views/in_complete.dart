@@ -4,21 +4,16 @@ import 'package:provider/provider.dart';
 import 'package:todolist1/controller.dart/functions/db_functions.dart';
 import 'package:todolist1/model/data_model.dart';
 import 'package:todolist1/controller.dart/theme/theme_manager.dart';
-import 'package:todolist1/screens/widget_pages/checkbox_change.dart';
-import 'package:todolist1/screens/widget_pages/custom_container.dart';
+import 'package:todolist1/views/widget_pages/checkbox_change.dart';
+import 'package:todolist1/views/widget_pages/custom_container.dart';
 
-class UnComplete extends StatefulWidget {
-  const UnComplete({super.key});
-
-  @override
-  State<UnComplete> createState() => _UnCompleteState();
-}
-
-class _UnCompleteState extends State<UnComplete> {
+class UnComplete extends StatelessWidget {
+   UnComplete({super.key});
   List<TaskModel> incompletedTasks = [];
   @override
   Widget build(BuildContext context) {
     final themeManager = Provider.of<ThemeManager>(context);
+    final db = Provider.of<dbProvider>(context,listen: false);
     // final currentDate = DateTime.now();
     return Scaffold(
       body: Stack(
@@ -53,12 +48,11 @@ class _UnCompleteState extends State<UnComplete> {
               Image.asset('asset/PngItem_1022533.png',height: 50,),
                   const Text("Inomplete Tasks",style: TextStyle(color: Colors.white,fontSize: 30,fontWeight: FontWeight.w200),),
               Builder(builder: (context) {
-          return ValueListenableBuilder(
-            valueListenable: taskListNotifier,
+          return Consumer<dbProvider>(
             builder:
-                (BuildContext ctx, List<TaskModel> todolist, Widget? child) {
+                (context, value, child){
               final incompleteTasks =
-                  todolist.where((task) => !task.tasComplete).toList();
+                  db.filteredTasks.where((task) => !task.tasComplete).toList();
               return Expanded(
                 child: ListView.builder(
                   itemCount: incompleteTasks.length,
@@ -104,7 +98,7 @@ class _UnCompleteState extends State<UnComplete> {
                                   value: data.tasComplete,
                                   onChanged: (newvalue) {
                                     if (newvalue!=true) {                                  
-                                        addtask(data);
+                                        db.addtask(data);
                                     }
                                   },
                                 ),

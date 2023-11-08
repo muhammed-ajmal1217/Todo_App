@@ -7,17 +7,13 @@ import 'package:todolist1/controller.dart/functions/db_functions.dart';
 import 'package:todolist1/model/data_model.dart';
 import 'package:todolist1/controller.dart/theme/theme_manager.dart';
 
-class Chart extends StatefulWidget {
+class Chart extends StatelessWidget {
   const Chart({super.key});
 
   @override
-  State<Chart> createState() => _ChartState();
-}
-
-class _ChartState extends State<Chart> {
-  @override
   Widget build(BuildContext context) {
-    final themeManager = Provider.of<ThemeManager>(context);
+    final themeManager = Provider.of<ThemeManager>(context,listen: false);
+    final db = Provider.of<dbProvider>(context,listen: false);
     return Scaffold(
       appBar: AppBar(
         title: Text('Chart'),
@@ -30,7 +26,7 @@ class _ChartState extends State<Chart> {
       body: Column(
         children: [
           FutureBuilder<List<TaskModel>>(
-            future: getAlltasks(),
+            future: db.getAlltasks(),
             builder: (context, snapshot) {
                if (!snapshot.hasData || snapshot.data!.isEmpty) {
                 return const Center(

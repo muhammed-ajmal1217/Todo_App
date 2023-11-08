@@ -2,23 +2,16 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:todolist1/controller.dart/functions/db_functions.dart';
 class ImageFunction {
   static Future<void> showAddPhotoDialog(BuildContext context) async {
     final ImagePicker imagePicker = ImagePicker();
     File? file;
-  //     final cameraPermission = await Permission.camera.request();
-  // if (cameraPermission.isDenied) {
-  //   return null;
-  // }
-  // final galleryPermission = await Permission.photos.request();
-  // if (galleryPermission.isDenied) {
-  //   return null;
-  // }
-
    await showDialog(
       context: context,
       builder: (BuildContext context) {
+        final db = Provider.of<dbProvider>(context,listen: false);
         return AlertDialog(
           title: const Center(child: Text('Add Profile picture')),
           actions: <Widget>[
@@ -36,7 +29,7 @@ class ImageFunction {
                           );
                           if (selectedImage != null) {
                             file = File(selectedImage.path);
-                            storeImageInHive(file!);
+                            db.storeImageInHive(file!);
                             Navigator.of(context).pop(file);
                           }
                         },
@@ -53,7 +46,7 @@ class ImageFunction {
                           );
                           if (selectedImage != null) {
                             file = File(selectedImage.path);
-                            storeImageInHive(file!);
+                            db.storeImageInHive(file!);
                             Navigator.of(context).pop(file);
                           }
                         },
@@ -71,7 +64,7 @@ class ImageFunction {
                 ),
                 TextButton(
                   onPressed: () {
-                    deleteStoredImage();
+                    db.deleteStoredImage();
                     Navigator.of(context).pop(null);
                   },
                   child: const Text('Delete Image'),

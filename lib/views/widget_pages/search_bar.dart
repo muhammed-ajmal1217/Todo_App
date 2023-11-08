@@ -1,57 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todolist1/controller.dart/provider.dart';
 
 class AnimatedSearchBar extends StatefulWidget {
   final Function(String) onSearch;
-  const  AnimatedSearchBar({super.key, required this.onSearch});
+  const AnimatedSearchBar({super.key, required this.onSearch});
+
   @override
-  // ignore: library_private_types_in_public_api
-  _AnimatedSearchBarState createState() => _AnimatedSearchBarState();
+  State<AnimatedSearchBar> createState() => _AnimatedSearchBarState();
 }
 
-class _AnimatedSearchBarState extends State<AnimatedSearchBar> {
-  final TextEditingController _controller = TextEditingController();
-  bool _isSearching = false;
 
+class _AnimatedSearchBarState extends State<AnimatedSearchBar> {
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
-    _controller.addListener(() {
-      if (_controller.text.isNotEmpty) {
-        widget.onSearch(_controller.text);
+        final searchProvider1 = Provider.of<SearchProvider>(context, listen: false);
+    searchProvider1.controller.addListener(() {
+      if (searchProvider1.controller.text.isNotEmpty) {
+        widget.onSearch(searchProvider1.controller.text);
       }
     });
   }
-
-  @override
   Widget build(BuildContext context) {
+ 
+    final searchProvider = Provider.of<SearchProvider>(context, listen: true);
     return AnimatedContainer(
       curve: Curves.easeIn,
       duration: const Duration(milliseconds: 300),
-      width: _isSearching ? 290.0 : 48,
+      width: searchProvider.isSearching ? 290.0 : 48,
       height: 50.0,
-      alignment: _isSearching ? Alignment.centerLeft : Alignment.centerRight,
+      alignment: searchProvider.isSearching
+          ? Alignment.centerLeft
+          : Alignment.centerRight,
       child: Row(
         children: <Widget>[
           IconButton(
             alignment: Alignment.center,
             icon: Icon(
-              _isSearching ? Icons.close : Icons.search,
+              searchProvider.isSearching ? Icons.close : Icons.search,
               size: 25,
               color: const Color.fromARGB(255, 255, 255, 255),
             ),
             onPressed: () {
-              setState(() {
-                _isSearching = !_isSearching;
-                if (!_isSearching) {
-                  _controller.clear();
-                }
-              });
+                searchProvider.searching();
             },
           ),
           Expanded(
-            child: _isSearching
+            child: searchProvider.isSearching
                 ? TextField(
-                    controller: _controller,
+                    controller: searchProvider.controller,
                     onChanged: (value) {
                       widget.onSearch(value);
                     },

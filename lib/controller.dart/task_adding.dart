@@ -1,17 +1,14 @@
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:todolist1/controller.dart/functions/db_functions.dart';
 import 'package:todolist1/model/data_model.dart';
 
-class ShowDialogAdd extends StatefulWidget {
+class ShowDialogAdd extends StatelessWidget {
   
-   const ShowDialogAdd({super.key});
+  ShowDialogAdd({super.key});
 
-  @override
-  State<ShowDialogAdd> createState() => _ShowDialogState();
-}
-
-class _ShowDialogState extends State<ShowDialogAdd> {
   final TextEditingController _taskController = TextEditingController();
 
   final TextEditingController _dateController = TextEditingController();
@@ -72,7 +69,7 @@ class _ShowDialogState extends State<ShowDialogAdd> {
                   width: 20,
                 ),
                 InkWell(
-                  onTap:()=>_showDatePicker(),
+                  onTap:()=>_showDatePicker(context),
                   splashColor: Colors.grey,
                   child: const Icon(
                     Icons.date_range_outlined,
@@ -107,11 +104,8 @@ class _ShowDialogState extends State<ShowDialogAdd> {
               TextButton(
                   child: const Text('Add'),
                   onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      setState(() {
-                        saveTask();
-                      });
-
+                    if (_formKey.currentState!.validate()) {                    
+                        saveTask(context);
                       Navigator.of(context).pop();
                     }
                   }),
@@ -123,7 +117,9 @@ class _ShowDialogState extends State<ShowDialogAdd> {
             ],
     );
   }
-    Future<void> saveTask() async {
+
+    Future<void> saveTask(BuildContext context) async {
+    final db=Provider.of<dbProvider>(context,listen: false);
     final task0 = _taskController.text.trim();
     final date = _dateTime;
     final descriPtion = _discriptController.text.trim();
@@ -132,13 +128,13 @@ class _ShowDialogState extends State<ShowDialogAdd> {
         tasComplete: false,
         date: date,
         description: descriPtion);
-    await addtask(task);
+    await db.addtask(task);
     _taskController.clear();
     _dateController.clear();
     _discriptController.clear();
   }
-  
-void _showDatePicker() {
+
+void _showDatePicker(BuildContext context) {
 
   showDatePicker(
     context: context,
@@ -146,15 +142,12 @@ void _showDatePicker() {
     firstDate: DateTime(2020),
     lastDate: DateTime(2060),
   ).then((value) {
-    if (value != null) {
-      setState(() {
+    if (value != null) {   
         _dateTime = value;
         _dateController.text = _formatDate(value);
-      });
     }
   });
 }
-
 
   String _formatDate(DateTime date) {
     return DateFormat('MM/dd/yyyy').format(date);

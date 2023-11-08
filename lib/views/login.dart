@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:todolist1/screens/bottom_bar.dart';
 import 'package:todolist1/controller.dart/theme/theme_manager.dart';
-import 'package:todolist1/screens/widget_pages/custom_container.dart';
+import 'package:todolist1/views/bottom_bar.dart';
+import 'package:todolist1/views/widget_pages/custom_container.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key});
@@ -31,9 +31,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    setState(() {
-      checkLoggedInUser();
-    });
+    checkLoggedInUser();
     super.initState();
   }
 
@@ -44,19 +42,18 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-           ClipPath(
-              clipper: MyCustomClipper2(),
-              child: Container(
-                height: 460,
-                width: double.infinity,
-                color: themeManager.mainContainerBack,
-              ),
+          ClipPath(
+            clipper: MyCustomClipper2(),
+            child: Container(
+              height: 460,
+              width: double.infinity,
+              color: themeManager.mainContainerBack,
             ),
+          ),
           Form(
             key: _formKey,
             child: Column(
               children: [
-                
                 ClipPath(
                   clipper: MyCustomClipper(),
                   child: Container(
@@ -92,7 +89,8 @@ class _LoginPageState extends State<LoginPage> {
                                     Color.fromARGB(255, 85, 211, 200),
                                     Color.fromARGB(255, 205, 243, 169)
                                   ],
-                                ).createShader(const Rect.fromLTWH(0, 0, 200, 70)),
+                                ).createShader(
+                                    const Rect.fromLTWH(0, 0, 200, 70)),
                             ),
                           ),
                           const SizedBox(
@@ -110,7 +108,8 @@ class _LoginPageState extends State<LoginPage> {
                                     Color.fromARGB(255, 85, 211, 200),
                                     Color.fromARGB(255, 205, 243, 169)
                                   ],
-                                ).createShader(const Rect.fromLTWH(0, 0, 200, 70)),
+                                ).createShader(
+                                    const Rect.fromLTWH(0, 0, 200, 70)),
                             ),
                           ),
                           const SizedBox(
@@ -144,23 +143,22 @@ class _LoginPageState extends State<LoginPage> {
                               width: 150,
                               height: 40,
                               decoration: BoxDecoration(
-                                 boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.40),
-                          spreadRadius: 1,
-                          blurRadius: 3,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                      gradient:const LinearGradient(
-                                  colors: [
-                                    Color.fromARGB(255, 1, 82, 64),
-                                    Color.fromARGB(255, 9, 136, 130),
-                                    Color.fromARGB(255, 34, 177, 170)
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.40),
+                                      spreadRadius: 1,
+                                      blurRadius: 3,
+                                      offset: const Offset(0, 4),
+                                    ),
                                   ],
-                                ) ,
-                      borderRadius: BorderRadius.circular(30)
-                      ),
+                                  gradient: const LinearGradient(
+                                    colors: [
+                                      Color.fromARGB(255, 1, 82, 64),
+                                      Color.fromARGB(255, 9, 136, 130),
+                                      Color.fromARGB(255, 34, 177, 170)
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(30)),
                               child: const Center(
                                   child: Text(
                                 'Lets Start',

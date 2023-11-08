@@ -4,20 +4,16 @@ import 'package:provider/provider.dart';
 import 'package:todolist1/controller.dart/functions/db_functions.dart';
 import 'package:todolist1/model/data_model.dart';
 import 'package:todolist1/controller.dart/theme/theme_manager.dart';
-import 'package:todolist1/screens/widget_pages/checkbox_change.dart';
-import 'package:todolist1/screens/widget_pages/custom_container.dart';
+import 'package:todolist1/views/widget_pages/checkbox_change.dart';
+import 'package:todolist1/views/widget_pages/custom_container.dart';
 
-class Completed extends StatefulWidget {
+class Completed extends StatelessWidget {
   const Completed({Key? key}) : super(key: key);
 
   @override
-  State<Completed> createState() => _CompletedState();
-}
-
-class _CompletedState extends State<Completed> {
-  @override
   Widget build(BuildContext context) {
     final themeManager = Provider.of<ThemeManager>(context);
+    final db = Provider.of<dbProvider>(context,listen: false);
     final currentDate = DateTime.now();
     return Scaffold(
       body: Stack(
@@ -52,11 +48,9 @@ class _CompletedState extends State<Completed> {
               Image.asset('asset/pngegg (1).png',height: 50,),
                   const Text("Completed Tasks",style: TextStyle(color: Colors.white,fontSize: 30,fontWeight: FontWeight.w200),),
               Builder(builder: (context) {
-                return ValueListenableBuilder(
-                  valueListenable: taskListNotifier,
-                  builder: (BuildContext ctx, List<TaskModel> todolist,
-                      Widget? child) {
-                    final completedTasks = todolist.where((task) {
+                return Consumer(
+                  builder: (context, dbProvider, child) {
+                    final completedTasks = db.filteredTasks.where((task) {
                       return task.tasComplete &&
                           (currentDate.isBefore(task.date) ||
                               currentDate.isAtSameMomentAs(task.date) ||
@@ -109,7 +103,7 @@ class _CompletedState extends State<Completed> {
                                         value: data.tasComplete,
                                         onChanged: (newvalue) {
                                           if (newvalue == true) {
-                                            addtask(data);
+                                            db.addtask(data);
                                           }
                                         },
                                       ),

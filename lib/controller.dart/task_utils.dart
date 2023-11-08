@@ -1,8 +1,6 @@
 
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:todolist1/controller.dart/functions/db_functions.dart';
 import 'package:todolist1/model/data_model.dart';
-import 'package:todolist1/screens/home_page.dart';
-
 List<TaskModel> filterTasksByCriteria(List<TaskModel> tasks, FilterCriteria selectedFilter, String search) {
   final now = DateTime.now();
   switch (selectedFilter) {
@@ -34,14 +32,6 @@ List<TaskModel> filterTasksByCriteria(List<TaskModel> tasks, FilterCriteria sele
   }
   
 }
-    void checkBoxchanged(bool? value, int index) async {
-      final taskDb = Hive.box<TaskModel>('task_db');
-      final task = taskDb.getAt(index);
-      if (task != null) {
-        task.tasComplete = value ?? false;
-        taskDb.putAt(index, task);
-      }
-   
-  }
+
 
   

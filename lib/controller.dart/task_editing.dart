@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:todolist1/controller.dart/functions/db_functions.dart';
 import 'package:todolist1/model/data_model.dart';
-import 'package:todolist1/screens/home_page.dart';
+import 'package:todolist1/views/home_page.dart';
 
-class ShowDialogEdit extends StatefulWidget {
+class ShowDialogEdit extends StatelessWidget {
   final TaskModel task;
   final int index;
 
-  const ShowDialogEdit({Key? key, required this.task, required this.index})
+  ShowDialogEdit({Key? key, required this.task, required this.index})
       : super(key: key);
 
-  @override
-  State<ShowDialogEdit> createState() => _ShowDialogState();
-}
-
-class _ShowDialogState extends State<ShowDialogEdit> {
   final TextEditingController _taskController = TextEditingController();
 
   final TextEditingController _dateController = TextEditingController();
@@ -27,17 +23,14 @@ class _ShowDialogState extends State<ShowDialogEdit> {
   DateTime _dateTime = DateTime.now();
 
   List<HomePage> todolist = [];
-  @override
-  void initState() {
-    super.initState();
-    _taskController.text = widget.task.taskName;
-    _discriptController.text = widget.task.description;
-    _dateTime = widget.task.date;
-    _dateController.text = _formatDate(widget.task.date);
-  }
 
   @override
   Widget build(BuildContext context) {
+    _taskController.text = task.taskName;
+    _discriptController.text = task.description;
+    _dateTime = task.date;
+    _dateController.text = _formatDate(task.date);
+    final db=Provider.of<dbProvider>(context,listen: false);
     return AlertDialog(
       elevation: 0,
       title: const Text('Edit Task'),
@@ -93,7 +86,7 @@ class _ShowDialogState extends State<ShowDialogEdit> {
                 ),
                 InkWell(
                     splashColor: Colors.grey,
-                    onTap: () => _showDatePicker(),
+                    onTap: () => _showDatePicker(context),
                     child: const Icon(
                       Icons.date_range_outlined,
                       size: 20,
@@ -129,11 +122,11 @@ class _ShowDialogState extends State<ShowDialogEdit> {
             if (_formKey.currentState!.validate()) {
               final updatedTask = TaskModel(
                 taskName: _taskController.text.trim(),
-                tasComplete: widget.task.tasComplete,
+                tasComplete: task.tasComplete,
                 date: _dateTime,
                 description: _discriptController.text.trim(),
               );
-              updateTask(widget.index, updatedTask);
+              db.updateTask(index, updatedTask);
               Navigator.of(context).pop(updatedTask);
             }
           },
@@ -148,18 +141,16 @@ class _ShowDialogState extends State<ShowDialogEdit> {
     );
   }
 
-  void _showDatePicker() {
+  void _showDatePicker(BuildContext context) {
     showDatePicker(
       context: context,
       initialDate: _dateTime,
       firstDate: DateTime(2020),
       lastDate: DateTime(2060),
     ).then((value) {
-      if (value != null) {
-        setState(() {
+      if (value != null) {    
           _dateTime = value;
           _dateController.text = _formatDate(value);
-        });
       }
     });
   }
