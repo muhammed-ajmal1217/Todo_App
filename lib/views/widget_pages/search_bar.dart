@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todolist1/controller.dart/provider.dart';
+import 'package:todolist1/provider/username_provider.dart.dart';
 
 class AnimatedSearchBar extends StatefulWidget {
   final Function(String) onSearch;

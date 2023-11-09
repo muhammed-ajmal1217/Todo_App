@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:todolist1/controller.dart/functions/db_functions.dart';
-// import 'package:todolist1/controller.dart/functions/filter_provider.dart';
-import 'package:todolist1/controller.dart/provider.dart';
+import 'package:todolist1/db_functions/db_functions.dart';
+import 'package:todolist1/provider/resetapp_provider.dart';
+import 'package:todolist1/provider/splash_provider.dart';
+import 'package:todolist1/provider/username_provider.dart.dart';
 import 'package:todolist1/views/login.dart';
 import 'package:todolist1/views/splash.dart';
-import 'package:todolist1/controller.dart/theme/theme_manager.dart';
+import 'package:todolist1/theme/theme_manager_provider.dart';
 import 'package:todolist1/model/data_model.dart';
 
 void main() async {
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeManager = Provider.of<ThemeManager>(context);
     return MultiProvider(providers: [
-      ChangeNotifierProvider(create: (context) => HomeProvider()),
+      ChangeNotifierProvider(create: (context) => UsernameProvider()),
       ChangeNotifierProvider(create: (context) => dbProvider()),
       ChangeNotifierProvider(create: (context) => SplashProvider()),
       ChangeNotifierProvider(create: (context) => ResetProvider()),

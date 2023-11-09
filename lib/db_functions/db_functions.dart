@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/widgets.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:todolist1/controller.dart/task_utils.dart';
+import 'package:todolist1/utils/task_utils.dart';
 import 'package:todolist1/model/data_model.dart';
 
 
@@ -74,6 +74,7 @@ void deleteStoredImage() async {
 
              final filteredByCriteria =
         filterTasksByCriteria(filteredBySearch, selectedFilter, term);
+     notifyListeners();
      filteredTasks = filteredByCriteria;
      notifyListeners();
   }

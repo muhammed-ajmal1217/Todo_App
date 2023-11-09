@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:todolist1/controller.dart/provider.dart';
+import 'package:todolist1/provider/username_provider.dart.dart';
 import 'package:todolist1/views/chart.dart';
-import '../controller.dart/theme/theme_manager.dart';
-import 'completed_page.dart';
-import 'home_page.dart';
-import 'in_complete.dart';
+import '../../theme/theme_manager_provider.dart';
+import '../completed_page.dart';
+import '../home_page.dart';
+import '../in_complete.dart';
 
 class BottomNavigation extends StatelessWidget {
   final String username;

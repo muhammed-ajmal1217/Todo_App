@@ -1,5 +1,5 @@
 
-import 'package:todolist1/controller.dart/functions/db_functions.dart';
+import 'package:todolist1/db_functions/db_functions.dart';
 import 'package:todolist1/model/data_model.dart';
 List<TaskModel> filterTasksByCriteria(List<TaskModel> tasks, FilterCriteria selectedFilter, String search) {
   final now = DateTime.now();

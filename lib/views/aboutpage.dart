@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todolist1/controller.dart/theme/theme_manager.dart';
+import 'package:todolist1/controller.dart/about_page_controller.dart';
+import 'package:todolist1/theme/theme_manager_provider.dart';
 
 
 class AboutPage extends StatelessWidget {
@@ -79,40 +80,5 @@ class AboutPage extends StatelessWidget {
             ),
           ),
         ));
-  }
-
-  Column featuresAdd({required String text1,String? text2}) {
-    return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const Icon(Icons.circle,size: 6,),
-                      const SizedBox(width: 10,),
-                      Text(text1,style: const TextStyle(fontWeight: FontWeight.w600),),
-                    ],
-                  ),
-                  makeSpace(5),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16),
-                    child: Text(text2!),
-                    
-                  ),
-                  makeSpace(8),
-                ],
-              );
-  }
-
-  Text hedings(String text) {
-    return Text(
-                text,
-                style: const TextStyle(fontWeight: FontWeight.w700),
-              );
-  }
-
-  SizedBox makeSpace(double? height) {
-    return SizedBox(
-      height: height,
-    );
   }
 }

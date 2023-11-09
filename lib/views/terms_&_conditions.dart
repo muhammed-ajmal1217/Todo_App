@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todolist1/controller.dart/theme/theme_manager.dart';
+import 'package:todolist1/controller.dart/term&condition_controller.dart';
+import 'package:todolist1/theme/theme_manager_provider.dart';
 
 class PrivacyPage extends StatelessWidget {
   const PrivacyPage({super.key});
@@ -49,38 +50,6 @@ class PrivacyPage extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  Row servicePoints(String text3) {
-    return Row(
-      children: [
-        const Icon(
-          Icons.circle,
-          size: 8,
-        ),
-        const SizedBox(
-          width: 6,
-        ),
-        Text(text3),
-      ],
-    );
-  }
-
-  Text content(String text2) {
-    return Text(text2);
-  }
-
-  SizedBox spacing(double height) {
-    return SizedBox(
-      height: height,
-    );
-  }
-
-  Text headings(String text1) {
-    return Text(
-      text1,
-      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
     );
   }
 }

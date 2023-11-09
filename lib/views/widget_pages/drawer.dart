@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:todolist1/controller.dart/provider.dart';
+import 'package:todolist1/controller.dart/drawe_controller.dart';
+import 'package:todolist1/provider/resetapp_provider.dart';
+import 'package:todolist1/provider/username_provider.dart.dart';
 import 'package:todolist1/views/aboutpage.dart';
 import 'package:todolist1/views/terms_&_conditions.dart';
-import 'package:todolist1/controller.dart/theme/theme_manager.dart';
+import 'package:todolist1/theme/theme_manager_provider.dart';
 
 // ignore: camel_case_types
 class draWer extends StatelessWidget {
@@ -159,17 +161,7 @@ class draWer extends StatelessWidget {
                       TextButton(
                           onPressed: () {
                            Provider.of<ResetProvider>(context,listen:false).resetApp(context);
-                            showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (BuildContext context) {
-                                return const Center(
-                                  child: CircularProgressIndicator(
-                                    color: Colors.greenAccent,
-                                  ),
-                                );
-                              },
-                            );
+                           dialogueLoder(context);
                           },
                           child: const Text('Reset')),
                       TextButton(
@@ -204,25 +196,7 @@ class draWer extends StatelessWidget {
               ],
             ),
             onTap: () {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: const Text('Exit App..?'),
-                      actions: [
-                        TextButton(
-                            onPressed: () {
-                              SystemNavigator.pop();
-                            },
-                            child: const Text('Exit')),
-                        TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: const Text('cancel')),
-                      ],
-                    );
-                  });
+              dialogueExit(context);
             },
           ),
           const Divider(),

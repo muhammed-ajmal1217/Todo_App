@@ -6,13 +6,13 @@ import 'package:provider/provider.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:todolist1/controller.dart/image_adding.dart';
-import 'package:todolist1/controller.dart/provider.dart';
-import 'package:todolist1/controller.dart/task_adding.dart';
-import 'package:todolist1/controller.dart/task_editing.dart';
-import 'package:todolist1/controller.dart/functions/db_functions.dart';
+import 'package:todolist1/views/widget_pages/image_adding.dart';
+import 'package:todolist1/provider/username_provider.dart.dart';
+import 'package:todolist1/views/widget_pages/task_adding.dart';
+import 'package:todolist1/views/widget_pages/task_editing.dart';
+import 'package:todolist1/db_functions/db_functions.dart';
 import 'package:todolist1/model/data_model.dart';
-import 'package:todolist1/controller.dart/theme/theme_manager.dart';
+import 'package:todolist1/theme/theme_manager_provider.dart';
 import 'package:todolist1/views/widget_pages/checkbox_change.dart';
 import 'package:todolist1/views/widget_pages/custom_container.dart';
 import 'package:todolist1/views/widget_pages/drawer.dart';
@@ -29,16 +29,17 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   File? file;
   ImagePicker image = ImagePicker();
-  // @override
-  // void initState() {
-  //   super.initState();   
+  @override
+  void initState() {
+    super.initState();   
+    loadTasks();
 
-  // }
+  }
   Future<void> loadTasks() async {
   final dbPro = Provider.of<dbProvider>(context, listen: false);
   dbPro.todolist = Hive.box<TaskModel>('task_db').values.toList();
   dbPro.filteredTasks = dbPro.todolist;
-  final nameProvider = Provider.of<HomeProvider>(context, listen: false);
+  final nameProvider = Provider.of<UsernameProvider>(context, listen: false);
   nameProvider.usernameFunction(widget.username);
   nameProvider.storedUsername;
 }
@@ -47,14 +48,11 @@ class _HomePageState extends State<HomePage> {
     Provider.of<SearchProvider>(context, listen: false).searching();
     Provider.of<dbProvider>(context,listen: false).filter(search);
    }
-   void filteredByCriteria(){
-    
-   }
+  
 
   @override
   Widget build(BuildContext context) {
-        loadTasks();
-    Provider.of<HomeProvider>(context, listen: false).storedUsername;
+    Provider.of<UsernameProvider>(context, listen: false).storedUsername;
     final dbPro = Provider.of<dbProvider>(context, listen: false);
     final themeManager = Provider.of<ThemeManager>(context);
           final storedImageBytes = dbPro.getStoredImage();

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:todolist1/controller.dart/theme/theme_manager.dart';
-import 'package:todolist1/views/bottom_bar.dart';
+import 'package:todolist1/theme/theme_manager_provider.dart';
+import 'package:todolist1/views/widget_pages/bottom_bar.dart';
 import 'package:todolist1/views/widget_pages/custom_container.dart';
 
 class LoginPage extends StatefulWidget {

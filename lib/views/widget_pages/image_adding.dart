@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:todolist1/controller.dart/functions/db_functions.dart';
+import 'package:todolist1/db_functions/db_functions.dart';
 class ImageFunction {
   static Future<void> showAddPhotoDialog(BuildContext context) async {
     final ImagePicker imagePicker = ImagePicker();

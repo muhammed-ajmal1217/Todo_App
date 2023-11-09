@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:todolist1/controller.dart/functions/db_functions.dart';
+import 'package:todolist1/db_functions/db_functions.dart';
 import 'package:todolist1/model/data_model.dart';
-import 'package:todolist1/controller.dart/theme/theme_manager.dart';
+import 'package:todolist1/theme/theme_manager_provider.dart';
 import 'package:todolist1/views/widget_pages/checkbox_change.dart';
 import 'package:todolist1/views/widget_pages/custom_container.dart';
 
@@ -13,7 +13,6 @@ class Completed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeManager = Provider.of<ThemeManager>(context);
-    final db = Provider.of<dbProvider>(context,listen: false);
     final currentDate = DateTime.now();
     return Scaffold(
       body: Stack(
@@ -48,15 +47,14 @@ class Completed extends StatelessWidget {
               Image.asset('asset/pngegg (1).png',height: 50,),
                   const Text("Completed Tasks",style: TextStyle(color: Colors.white,fontSize: 30,fontWeight: FontWeight.w200),),
               Builder(builder: (context) {
-                return Consumer(
+                return Consumer<dbProvider>(
                   builder: (context, dbProvider, child) {
-                    final completedTasks = db.filteredTasks.where((task) {
+                    final completedTasks = dbProvider.filteredTasks.where((task) {
                       return task.tasComplete &&
                           (currentDate.isBefore(task.date) ||
                               currentDate.isAtSameMomentAs(task.date) ||
                               isSameDay(currentDate, task.date));
                     }).toList();
-
                     return Expanded(
                       child: ListView.builder(
                         itemCount: completedTasks.length,
@@ -103,7 +101,7 @@ class Completed extends StatelessWidget {
                                         value: data.tasComplete,
                                         onChanged: (newvalue) {
                                           if (newvalue == true) {
-                                            db.addtask(data);
+                                            dbProvider.addtask(data);
                                           }
                                         },
                                       ),

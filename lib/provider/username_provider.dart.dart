@@ -8,7 +8,7 @@ import 'package:todolist1/views/completed_page.dart';
 import 'package:todolist1/views/home_page.dart';
 import 'package:todolist1/views/in_complete.dart';
 import 'package:todolist1/views/login.dart';
-class HomeProvider extends ChangeNotifier{
+class UsernameProvider extends ChangeNotifier{
   final storedUsername = Hive.box('username_box').get('username');
   String _username = "";
   String get username => _username;
@@ -17,36 +17,11 @@ class HomeProvider extends ChangeNotifier{
     if (storedUsername != null) {
           _username=newUsername;
       }
-      // notifyListeners();
+       notifyListeners();
    }
 }
-class SplashProvider extends ChangeNotifier{
-  bool isLoading = true;
-  void setLoading(bool value) {
-    isLoading = value;
-    notifyListeners();
-  }
-}
-class ResetProvider extends ChangeNotifier{
-    void resetApp(BuildContext context) async {
-    final sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.clear();
-    notifyListeners();
-    final taskbox = Hive.box<TaskModel>('task_db');
-    await taskbox.clear();
-    notifyListeners();
-    final pictureBox = Hive.box('profile_picture_box');
-    await pictureBox.clear();
-    notifyListeners();
-    final nameBox = Hive.box('username_box');
-    await nameBox.clear();
-    notifyListeners();
-    await Future.delayed(const Duration(seconds: 2));
-    // ignore: use_build_context_synchronously
-    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (ctx)=>const LoginPage()), (route) => false);
-    notifyListeners();
-  }
-}
+
+
 
 class SearchProvider with ChangeNotifier {
   bool _isSearching = false;
@@ -76,6 +51,7 @@ class BottomNavigationProvider with ChangeNotifier {
       const Chart(),
      ];
     currentScreen = widgetOptions[selectIndex];
+    notifyListeners();
   }
 
   void navigateToPage(int index) {
