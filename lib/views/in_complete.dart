@@ -4,16 +4,16 @@ import 'package:provider/provider.dart';
 import 'package:todolist1/db_functions/db_functions.dart';
 import 'package:todolist1/model/data_model.dart';
 import 'package:todolist1/theme/theme_manager_provider.dart';
-import 'package:todolist1/views/widget_pages/checkbox_change.dart';
-import 'package:todolist1/views/widget_pages/custom_container.dart';
+import 'package:todolist1/widget_pages/checkbox_change.dart';
+import 'package:todolist1/widget_pages/custom_container.dart';
 
+// ignore: must_be_immutable
 class UnComplete extends StatelessWidget {
    UnComplete({super.key});
   List<TaskModel> incompletedTasks = [];
   @override
   Widget build(BuildContext context) {
     final themeManager = Provider.of<ThemeManager>(context);
-    final db = Provider.of<dbProvider>(context,listen: false);
     // final currentDate = DateTime.now();
     return Scaffold(
       body: Stack(
@@ -50,7 +50,7 @@ class UnComplete extends StatelessWidget {
               Builder(builder: (context) {
           return Consumer<dbProvider>(
             builder:
-                (context, value, child){
+                (context, db, child){
               final incompleteTasks =
                   db.filteredTasks.where((task) => !task.tasComplete).toList();
               return Expanded(

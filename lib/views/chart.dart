@@ -2,7 +2,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todolist1/controller.dart/chart_controller.dart';
+import 'package:todolist1/controller/chart_controller.dart';
 import 'package:todolist1/db_functions/db_functions.dart';
 
 import 'package:todolist1/model/data_model.dart';

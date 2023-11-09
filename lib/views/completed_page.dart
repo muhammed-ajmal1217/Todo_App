@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:todolist1/db_functions/db_functions.dart';
-import 'package:todolist1/model/data_model.dart';
 import 'package:todolist1/theme/theme_manager_provider.dart';
-import 'package:todolist1/views/widget_pages/checkbox_change.dart';
-import 'package:todolist1/views/widget_pages/custom_container.dart';
+import 'package:todolist1/widget_pages/checkbox_change.dart';
+import 'package:todolist1/widget_pages/custom_container.dart';
 
 class Completed extends StatelessWidget {
   const Completed({Key? key}) : super(key: key);

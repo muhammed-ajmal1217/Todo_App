@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todolist1/controller.dart/about_page_controller.dart';
+import 'package:todolist1/controller/about_page_controller.dart';
 import 'package:todolist1/theme/theme_manager_provider.dart';
 
 

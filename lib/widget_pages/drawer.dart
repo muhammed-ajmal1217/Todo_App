@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:todolist1/controller.dart/drawe_controller.dart';
+import 'package:todolist1/controller/drawe_controller.dart';
 import 'package:todolist1/provider/resetapp_provider.dart';
-import 'package:todolist1/provider/username_provider.dart.dart';
 import 'package:todolist1/views/aboutpage.dart';
 import 'package:todolist1/views/terms_&_conditions.dart';
 import 'package:todolist1/theme/theme_manager_provider.dart';

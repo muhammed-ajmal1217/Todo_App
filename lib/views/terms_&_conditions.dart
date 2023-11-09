@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todolist1/controller.dart/term&condition_controller.dart';
+import 'package:todolist1/controller/term&condition_controller.dart';
 import 'package:todolist1/theme/theme_manager_provider.dart';
 
 class PrivacyPage extends StatelessWidget {

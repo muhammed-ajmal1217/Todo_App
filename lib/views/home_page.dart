@@ -6,17 +6,19 @@ import 'package:provider/provider.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:todolist1/views/widget_pages/image_adding.dart';
+import 'package:todolist1/controller/home_controller.dart';
+import 'package:todolist1/provider/search_provider.dart';
+import 'package:todolist1/widget_pages/image_adding.dart';
 import 'package:todolist1/provider/username_provider.dart.dart';
-import 'package:todolist1/views/widget_pages/task_adding.dart';
-import 'package:todolist1/views/widget_pages/task_editing.dart';
+import 'package:todolist1/widget_pages/task_adding.dart';
+import 'package:todolist1/widget_pages/task_editing.dart';
 import 'package:todolist1/db_functions/db_functions.dart';
 import 'package:todolist1/model/data_model.dart';
 import 'package:todolist1/theme/theme_manager_provider.dart';
-import 'package:todolist1/views/widget_pages/checkbox_change.dart';
-import 'package:todolist1/views/widget_pages/custom_container.dart';
-import 'package:todolist1/views/widget_pages/drawer.dart';
-import 'package:todolist1/views/widget_pages/search_bar.dart';
+import 'package:todolist1/widget_pages/checkbox_change.dart';
+import 'package:todolist1/widget_pages/custom_container.dart';
+import 'package:todolist1/widget_pages/drawer.dart';
+import 'package:todolist1/widget_pages/search_bar.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatefulWidget {
@@ -32,23 +34,15 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();   
-    loadTasks();
-
+    loadTasks(context);
+    final nameProvider = Provider.of<UsernameProvider>(context, listen: false);
+    nameProvider.usernameFunction(widget.username);
+    nameProvider.storedUsername;
   }
-  Future<void> loadTasks() async {
-  final dbPro = Provider.of<dbProvider>(context, listen: false);
-  dbPro.todolist = Hive.box<TaskModel>('task_db').values.toList();
-  dbPro.filteredTasks = dbPro.todolist;
-  final nameProvider = Provider.of<UsernameProvider>(context, listen: false);
-  nameProvider.usernameFunction(widget.username);
-  nameProvider.storedUsername;
-}
-
    void filterTasks(String search) {  
     Provider.of<SearchProvider>(context, listen: false).searching();
     Provider.of<dbProvider>(context,listen: false).filter(search);
    }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -336,7 +330,7 @@ class _HomePageState extends State<HomePage> {
                                                   ),
                                                   InkWell(
                                                     onTap: () {
-                                                      _showDeleteConfirmationDialog(
+                                                      showDeleteConfirmationDialog(
                                                           context, index);
                                                     },
                                                     child: const Icon(
@@ -361,50 +355,6 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-          );
-       
-  }
-
-  Future<dynamic> ShowDialogueBox(BuildContext context, int index) {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16.0),
-          ),
-          child: SingleChildScrollView(
-            child: ShowDialogEdit(task: Provider.of<dbProvider>(context,listen: false).filteredTasks[index], index: index),
-          ),
-        );
-      },
-    );
-  }
-
-  void _showDeleteConfirmationDialog(BuildContext context, int index) {
-    final dbPro = Provider.of<dbProvider>(context, listen: false);
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Are you sure you want to delete this task?'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Delete'),
-              onPressed: () {            
-                  dbPro.deleteTask(index);
-                  Navigator.of(context).pop();            
-              },
-            ),
-          ],
-        );
-      },
-    );
+          );    
   }
 }

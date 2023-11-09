@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todolist1/provider/splash_provider.dart';
-import 'package:todolist1/views/widget_pages/bottom_bar.dart';
+import 'package:todolist1/widget_pages/bottom_bar.dart';
 import 'package:todolist1/theme/theme_manager_provider.dart';
 
 // ignore: must_be_immutable
